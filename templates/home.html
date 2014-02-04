@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="static/c.css"/>
+</head>
+<body>
+<table>
+    <tbody>
+    <tr>
+        <th>Comparing time</th>
+        <th>Result</th>
+        <th>difs</th>
+    </tr>
+    {% for result in results -%}
+        <tr>
+            <td>{{ result['datetime'] }}</td>
+            <td>{% if result['areIdentical'] == 1 %} identical {% else %} not identical {% endif %}</td>
+            <td><a href="/diff?f={{ result['compared_objs'][0] }}&s={{ result['compared_objs'][1] }}" target="_blank">show
+                diff</a></td>
+        </tr>
+    {%- endfor %}
+
+    </tbody>
+</table>
+
+
+</body>
+</html>
