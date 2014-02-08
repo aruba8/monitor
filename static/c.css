@@ -42,3 +42,16 @@ th {
     color: red;
 }
 
+ins {
+    background-color: lightgreen;
+}
+
+del {
+    background-color: lightcoral;
+}
+
+#content {
+    border: 1px solid #000000;
+}
+
+
