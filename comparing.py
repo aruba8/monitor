@@ -17,8 +17,7 @@ class Comparator:
 
     def compare(self, url_type):
         docs_to_compare = self.html_dao.get_unchecked_by_type(url_type)
-        print "Docs to compare : ", docs_to_compare.count()
-        print(docs_to_compare[0]['_id'])
+        print "Started comparison. Docs to compare : ", docs_to_compare.count()
         for doc in docs_to_compare:
             prev_doc = self.html_dao.get_next_lower_entry(doc['_id'])
             if prev_doc == None:
