@@ -1,10 +1,11 @@
 #!/usr/bin/python
-from comparing import Comparator
 
 __author__ = 'erik'
 
-from pymongo import MongoClient
 from urllib2 import urlopen
+
+from pymongo import MongoClient
+
 
 connection_string = "mongodb://localhost"
 connection = MongoClient(connection_string)
@@ -14,6 +15,8 @@ url1 = 'http://www.immigratemanitoba.com/how-to-immigrate/apply/recruitment-miss
 url2 = 'http://www.immigratemanitoba.com/how-to-immigrate/apply/exploratory-visits/'
 url3 = 'http://www.immigratemanitoba.com/how-to-immigrate/mpnp-resources/'
 
+urls = [url1, url2, url3]
+
 
 def get_page_as_string(url):
     return urlopen(url).read().strip()
@@ -21,19 +24,14 @@ def get_page_as_string(url):
 
 
 if __name__ == '__main__':
+    from comparing import Comparator
     from diffdb import HtmlDAO
-
-    htm1 = get_page_as_string(url1)
-    htm2 = get_page_as_string(url2)
-    htm3 = get_page_as_string(url3)
     dao = HtmlDAO(database)
-    dao.insert_html(htm1, url1, 1)
-    dao.insert_html(htm2, url2, 2)
-    dao.insert_html(htm3, url3, 3)
-
     comparator = Comparator(database)
-    comparator.compare(1)
-    comparator.compare(2)
-    comparator.compare(3)
+
+    for url, i in zip(urls, range(len(urls))):
+        htm = get_page_as_string(url)
+        dao.insert_html(htm, url, i + 1)
+        comparator.compare(i + 1)
 
 

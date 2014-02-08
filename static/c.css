@@ -1,6 +1,8 @@
 body {
     font-family: "Courier New", monospace;
     width: 1000px;
+    margin: 0 auto;
+    margin-top: 20px;
 
 }
 
@@ -8,6 +10,7 @@ table, th, td {
     border: 1px solid #000000;
     margin-top: 5px;
     margin-bottom: 10px;
+    width: 450px;
 }
 
 #table1 {
@@ -28,6 +31,7 @@ table {
 
 td {
     padding: 3px 2px 1px 2px;
+    text-align: center;
 }
 
 th {
