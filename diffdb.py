@@ -17,11 +17,14 @@ class HtmlDAO:
         return self.htmls.find_one({'_id': ObjectId(old)}), self.htmls.find_one({'_id': ObjectId(new)})
 
     def insert_html(self, html_string, url, url_type):
+        dt = datetime.now()
         query = {'html': html_string,
-                 'datetime': datetime.now(),
-                 'url': url,
+                 'datetime': dt,
                  'urlType': url_type,
                  'checked': 0,
+                 'date': dt.strftime("%d.%m.%Y"),
+                 'time': dt.strftime("%X"),
+                 'url': url,
                  'div': self.get_div_content(html_string)}
         try:
             self.htmls.insert(query)
@@ -60,9 +63,12 @@ class HtmlDAO:
             return result_set[0]
 
     def insert_result(self, are_identical, obj_id1, obj_id2, url_type):
+        dt = datetime.now()
         query_to_insert = {'areIdentical': are_identical,
                            'compared_objs': [obj_id1, obj_id2],
-                           'datetime': datetime.now(),
+                           'date': dt.strftime("%d.%m.%Y"),
+                           'time': dt.strftime("%X"),
+                           'datetime': dt,
                            'urlType': url_type}
         self.results.insert(query_to_insert)
 

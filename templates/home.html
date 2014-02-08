@@ -11,14 +11,16 @@
     <table id="t1">
         <tbody>
         <tr>
-        <th>Comparing time</th>
-        <th>Result</th>
+            <th>Time</th>
+            <th>Date</th>
+            <th>Result</th>
             <th>Full dif</th>
             <th>Content dif</th>
         </tr>
         {% for result in results1 -%}
             <tr>
-            <td>{{ result['datetime'] }}</td>
+                <td>{{ result['time'] }}</td>
+                <td> {{ result['date'] }}</td>
                 <td>{% if result['areIdentical'] == 1 %} identical {% else %}
                     <span class="warn">not identical </span>{% endif %}</td>
                 <td><a href="/diff?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
@@ -37,14 +39,16 @@
     <table id="t2">
         <tbody>
         <tr>
-            <th>Comparing time</th>
+            <th>Time</th>
+            <th>Date</th>
             <th>Result</th>
             <th>Full dif</th>
             <th>Content dif</th>
         </tr>
         {% for result in results2 -%}
             <tr>
-                <td>{{ result['datetime'] }}</td>
+                <td>{{ result['time'] }}</td>
+                <td> {{ result['date'] }}</td>
                 <td>{% if result['areIdentical'] == 1 %} identical {% else %}
                     <span class="warn">not identical</span> {% endif %}</td>
                 <td><a href="/diff?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
@@ -61,14 +65,16 @@
     <table id="t3">
         <tbody>
         <tr>
-            <th>Comparing time</th>
+            <th>Time</th>
+            <th>Date</th>
             <th>Result</th>
             <th>Full dif</th>
             <th>Content dif</th>
         </tr>
         {% for result in results3 -%}
             <tr>
-                <td>{{ result['datetime'] }}</td>
+                <td>{{ result['time'] }}</td>
+                <td> {{ result['date'] }}</td>
                 <td>{% if result['areIdentical'] == 1 %} identical {% else %}
                     <span class="warn">not identical</span> {% endif %}</td>
                 <td><a href="/diff?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
