@@ -39,6 +39,3 @@ class Emailer():
         except smtplib.SMTPException:
             print "Error: unable to send email"
 
-
-            # if __name__ == '__main__':
-            #     e = Emailer()

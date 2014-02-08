@@ -6,3 +6,5 @@ configs.ini
 config.ini
 
 *.log
+
+test.py

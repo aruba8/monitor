@@ -50,13 +50,3 @@ class Comparator:
             '''
             message = e.init_msg('Attention!!', text)
             e.send_email(message)
-
-
-if __name__ == '__main__':
-    from pymongo import MongoClient
-
-    client = MongoClient('mongodb://localhost')
-    hdb = client.diffs
-    html_dao = HtmlDAO(hdb)
-    cp = Comparator(hdb)
-    cp.check(3)

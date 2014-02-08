@@ -75,10 +75,10 @@ class HtmlDAO:
         query = {'urlType': url_type}
         return self.results.find(query).sort('datetime', -1).limit(10)
 
-if __name__ == '__main__':
-    from pymongo import MongoClient
+    def get_results_skip(self, url_type, limit_number, number_to_skip):
+        query = {'urlType': url_type}
+        return self.results.find(query).sort('datetime', -1).limit(limit_number).skip(number_to_skip)
 
-    client = MongoClient('mongodb://localhost')
-    hdb = client.diffs
-    html_dao = HtmlDAO(hdb)
-    print html_dao.get_next_lower_entry('52f5caa08e3c113528214b85')
+    def get_url_by_url_type(self, url_type):
+        query = {'urlType': url_type}
+        return self.htmls.find(query).sort('datetime', -1).limit(1)[0]['url']

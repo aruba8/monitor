@@ -8,7 +8,7 @@ env = Environment(loader=PackageLoader('app', 'templates'))
 template_home = env.get_template('home.html')
 template_diff = env.get_template('diff.html')
 template_diff_c = env.get_template('diffc.html')
-template_redirect = env.get_template('redirect.html')
+template_paging = env.get_template('p.html')
 
 from pymongo import MongoClient
 from comparing import Comparator
@@ -47,6 +47,21 @@ def diffs_c():
     old, new = html_dao.get_html_by_ids(f_param, s_param)
     result = comparator.show_diff(old['div'], new['div'])
     return template_diff_c.render(result=result)
+
+@app.route('/p', methods=['GET'])
+def paging_table():
+    args = request.args
+    url_type = int(args['ut'])
+    page = 0
+    if 'p' in args:
+        page = int(args['p'])
+    if page < 0:
+        page = 0
+
+    results = html_dao.get_results_skip(url_type, 10, page)
+    url = html_dao.get_url_by_url_type(url_type)
+    return template_paging.render(results=results,ut=url_type, url=url, short_url=url[32:], p=page)
+
 
 
 if __name__ == '__main__':
