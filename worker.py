@@ -22,18 +22,23 @@ def get_page_as_string(url):
     return urlopen(url).read().strip()
 
 
+from comparing import Comparator
+from diffdb import HtmlDAO
 
-if __name__ == '__main__':
-    from comparing import Comparator
-    from diffdb import HtmlDAO
-    dao = HtmlDAO(database)
-    comparator = Comparator(database)
+dao = HtmlDAO(database)
+comparator = Comparator(database)
 
+
+def do_work():
     for url in urls:
         htm = get_page_as_string(url[1])
         dao.insert_html(htm, url[1], url[0])
         comparator.compare(url[0])
         comparator.check(url[0])
+
+
+if __name__ == '__main__':
+    do_work()
 
 
 
