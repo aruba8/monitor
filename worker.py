@@ -11,9 +11,9 @@ connection_string = "mongodb://localhost"
 connection = MongoClient(connection_string)
 database = connection.diffs
 
-url1 = 'http://www.immigratemanitoba.com/how-to-immigrate/apply/recruitment-missions/'
-url2 = 'http://www.immigratemanitoba.com/how-to-immigrate/apply/exploratory-visits/'
-url3 = 'http://www.immigratemanitoba.com/how-to-immigrate/mpnp-resources/'
+url1 = (1, 'http://www.immigratemanitoba.com/how-to-immigrate/apply/recruitment-missions/')
+url2 = (2, 'http://www.immigratemanitoba.com/how-to-immigrate/apply/exploratory-visits/')
+url3 = (3, 'http://www.immigratemanitoba.com/how-to-immigrate/mpnp-resources/')
 
 urls = [url1, url2, url3]
 
@@ -29,11 +29,11 @@ if __name__ == '__main__':
     dao = HtmlDAO(database)
     comparator = Comparator(database)
 
-    for url, i in zip(urls, range(len(urls))):
-        htm = get_page_as_string(url)
-        dao.insert_html(htm, url, i + 1)
-        comparator.compare(i + 1)
-        comparator.check(i + 1)
+    for url in urls:
+        htm = get_page_as_string(url[1])
+        dao.insert_html(htm, url[1], url[0])
+        comparator.compare(url[0])
+        comparator.check(url[0])
 
 
 
