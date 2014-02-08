@@ -1,6 +1,9 @@
 from email.header import Header
 from email.mime.text import MIMEText
 
+import os
+
+
 __author__ = 'erik'
 
 import smtplib
@@ -11,7 +14,8 @@ class Emailer():
         from ConfigParser import ConfigParser
 
         self.config = ConfigParser()
-        self.config.read('config.ini')
+        self.__cfile = open(os.path.join(os.getcwd(), 'config.ini'), 'r')
+        self.config.readfp(self.__cfile)
         self.login = self.config.get('EmailConfigs', 'sender')
         self.password = self.config.get('EmailConfigs', 'password')
         self.to = self.config.get('EmailConfigs', 'to').split(',')
@@ -36,6 +40,5 @@ class Emailer():
             print "Error: unable to send email"
 
 
-if __name__ == '__main__':
-    e = Emailer()
-    print e.to
+            # if __name__ == '__main__':
+            #     e = Emailer()

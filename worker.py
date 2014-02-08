@@ -33,5 +33,8 @@ if __name__ == '__main__':
         htm = get_page_as_string(url)
         dao.insert_html(htm, url, i + 1)
         comparator.compare(i + 1)
+        comparator.check(i + 1)
+
+
 
 

@@ -2,7 +2,6 @@ __author__ = 'erik'
 
 from diffdb import HtmlDAO
 
-from pymongo import MongoClient
 from lxml import html
 from lxml.html.diff import htmldiff
 
@@ -39,15 +38,26 @@ class Comparator:
         elem = html_string.xpath('//div[@id="content"]')
         return elem[0].text_content().strip()
 
+    def check(self, url_type):
+        result = self.html_dao.get_results(url_type)[0]
+        from emailworker import Emailer
 
-if __name__ == '__main__':
-    # for testing
-    client = MongoClient('mongodb://localhost')
-    hdb = client.diffs
-    html_dao = HtmlDAO(hdb)
-    cp = Comparator(hdb)
-    url_type = 2
+        e = Emailer()
+        if result['areIdentical'] == 0:
+            text = '''
+            Some changes are realized!!
+            http://mmcp.zapto.org/
+            '''
+            message = e.init_msg('Attention!!', text)
+            e.send_email(message)
 
-    cp.compare(url_type)
-    for i in html_dao.get_results(url_type):
-        print i
+
+
+
+
+        # if __name__ == '__main__':
+        # for testing
+        # client = MongoClient('mongodb://localhost')
+        # hdb = client.diffs
+        # html_dao = HtmlDAO(hdb)
+        # cp = Comparator(hdb)
