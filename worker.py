@@ -11,9 +11,9 @@ connection_string = "mongodb://localhost"
 connection = MongoClient(connection_string)
 database = connection.diffs
 
-url1 = (1, 'http://www.immigratemanitoba.com/how-to-immigrate/apply/recruitment-missions/')
-url2 = (2, 'http://www.immigratemanitoba.com/how-to-immigrate/apply/exploratory-visits/')
-url3 = (3, 'http://www.immigratemanitoba.com/how-to-immigrate/mpnp-resources/')
+url1 = 'http://www.immigratemanitoba.com/how-to-immigrate/apply/recruitment-missions/'
+url2 = 'http://www.immigratemanitoba.com/how-to-immigrate/apply/exploratory-visits/'
+url3 = 'http://www.immigratemanitoba.com/how-to-immigrate/mpnp-resources/'
 
 urls = [url1, url2, url3]
 
@@ -30,15 +30,17 @@ comparator = Comparator(database)
 
 
 if __name__ == '__main__':
-    htm = get_page_as_string(url1[1])
-    htm = get_page_as_string(url2[1])
-    htm = get_page_as_string(url3[1])
-    comparator.compare(url1[0])
-    comparator.compare(url2[0])
-    comparator.compare(url3[0])
-    comparator.check(url1[0])
-    comparator.check(url2[0])
-    comparator.check(url3[0])
+    dao.insert_html(get_page_as_string(url1), url1, 1)
+    dao.insert_html(get_page_as_string(url2), url2, 2)
+    dao.insert_html(get_page_as_string(url3), url3, 3)
+
+    comparator.compare(1)
+    comparator.compare(2)
+    comparator.compare(3)
+
+    comparator.check(1)
+    comparator.check(2)
+    comparator.check(3)
 
 
 
