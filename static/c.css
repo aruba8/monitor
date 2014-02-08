@@ -7,6 +7,7 @@ body {
 table, th, td {
     border: 1px solid #000000;
     margin-top: 5px;
+    margin-bottom: 10px;
 }
 
 #table1 {
@@ -15,6 +16,10 @@ table, th, td {
 
 #table2 {
     float: right;
+}
+
+#table3 {
+    float: left;
 }
 
 table {

@@ -24,7 +24,8 @@ html_dao = HtmlDAO(db)
 def home_1():
     results1 = html_dao.get_results(1)
     results2 = html_dao.get_results(2)
-    return template_home.render(results1=results1, results2=results2)
+    results3 = html_dao.get_results(3)
+    return template_home.render(results1=results1, results2=results2, results3=results3)
 
 
 @app.route('/diff', methods=['GET'])

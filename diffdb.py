@@ -53,7 +53,8 @@ class HtmlDAO:
         query_current = {'_id': ObjectId(object_id)}
         cur_entry = self.htmls.find_one(query_current)
         query_next = {'datetime': {'$lt': cur_entry['datetime']}, 'urlType': cur_entry['urlType']}
-        return self.htmls.find_one(query_next)
+        print(query_next)
+        return self.htmls.find(query_next).sort('datetime', -1).limit(1)[0]
 
     def insert_result(self, are_identical, obj_id1, obj_id2, url_type):
         query_to_insert = {'areIdentical': are_identical,
@@ -72,5 +73,4 @@ if __name__ == '__main__':
     client = MongoClient('mongodb://localhost')
     hdb = client.diffs
     html_dao = HtmlDAO(hdb)
-    for i in html_dao.get_html_by_ids('52f5b3ba8e3c1127e8654d89', '52f5b3ba8e3c1127e8654d8a'):
-        print(i)
+    print html_dao.get_next_lower_entry('52f5caa08e3c113528214b85')

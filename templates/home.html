@@ -51,5 +51,27 @@
         </tbody>
     </table>
 </div>
+<div id="table3">
+    <span><a href="http://www.immigratemanitoba.com/how-to-immigrate/mpnp-resources/" target="_blank">/how-to-immigrate/mpnp-resources/</a> </span>
+    <table id="t3">
+        <tbody>
+        <tr>
+            <th>Comparing time</th>
+            <th>Result</th>
+            <th>difs</th>
+        </tr>
+        {% for result in results3 -%}
+            <tr>
+                <td>{{ result['datetime'] }}</td>
+                <td>{% if result['areIdentical'] == 1 %} identical {% else %}
+                    <span class="warn">not identical</span> {% endif %}</td>
+                <td><a href="/diff?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
+                       target="_blank">show
+                    diff</a></td>
+            </tr>
+        {%- endfor %}
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

@@ -11,8 +11,8 @@ connection = MongoClient(connection_string)
 database = connection.diffs
 
 url1 = 'http://www.immigratemanitoba.com/how-to-immigrate/apply/recruitment-missions/'
-
 url2 = 'http://www.immigratemanitoba.com/how-to-immigrate/apply/exploratory-visits/'
+url3 = 'http://www.immigratemanitoba.com/how-to-immigrate/mpnp-resources/'
 
 
 def get_page_as_string(url):
@@ -25,12 +25,15 @@ if __name__ == '__main__':
 
     htm1 = get_page_as_string(url1)
     htm2 = get_page_as_string(url2)
+    htm3 = get_page_as_string(url3)
     dao = HtmlDAO(database)
     dao.insert_html(htm1, url1, 1)
     dao.insert_html(htm2, url2, 2)
+    dao.insert_html(htm3, url3, 3)
 
     comparator = Comparator(database)
     comparator.compare(1)
     comparator.compare(2)
+    comparator.compare(3)
 
 
