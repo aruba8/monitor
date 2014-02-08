@@ -13,7 +13,6 @@ class HtmlDAO:
         self.results = database_diffs.results
 
     def get_html_by_ids(self, old, new):
-        query = {'_id': {'$in': [ObjectId(old), ObjectId(new)]}}
         return self.htmls.find_one({'_id': ObjectId(old)}), self.htmls.find_one({'_id': ObjectId(new)})
 
     def insert_html(self, html_string, url, url_type):
