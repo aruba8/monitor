@@ -1,9 +1,20 @@
 body {
     font-family: "Courier New", monospace;
+    width: 1000px;
+
 }
 
 table, th, td {
     border: 1px solid #000000;
+    margin-top: 5px;
+}
+
+#table1 {
+    float: left;
+}
+
+#table2 {
+    float: right;
 }
 
 table {
@@ -16,5 +27,9 @@ td {
 
 th {
     background-color: #A5D6D9;
+}
+
+.warn {
+    color: red;
 }
 

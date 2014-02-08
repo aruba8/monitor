@@ -19,9 +19,10 @@ def get_page_as_string(url):
     return urlopen(url).read().strip()
 
 
-from diffdb import HtmlDAO
 
 if __name__ == '__main__':
+    from diffdb import HtmlDAO
+
     htm1 = get_page_as_string(url1)
     htm2 = get_page_as_string(url2)
     dao = HtmlDAO(database)

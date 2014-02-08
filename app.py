@@ -7,8 +7,10 @@ app = Flask(__name__)
 env = Environment(loader=PackageLoader('app', 'templates'))
 template_home = env.get_template('home.html')
 template_diff = env.get_template('diff.html')
+template_redirect = env.get_template('redirect.html')
 
 from pymongo import MongoClient
+from comparing import Comparator
 
 
 client = MongoClient('mongodb://localhost')
@@ -19,16 +21,20 @@ html_dao = HtmlDAO(db)
 
 
 @app.route('/')
-def home():
-    results = html_dao.get_results(1)
-    return template_home.render(results=results)
+def home_1():
+    results1 = html_dao.get_results(1)
+    results2 = html_dao.get_results(2)
+    return template_home.render(results1=results1, results2=results2)
 
 
 @app.route('/diff', methods=['GET'])
 def diffs():
     f_param = request.args['f']
     s_param = request.args['s']
-    return template_diff.render(s=s_param, f=f_param)
+    comparator = Comparator(db)
+    old, new = html_dao.get_html_by_ids(f_param, s_param)
+    result = comparator.show_diff(old['html'], new['html'])
+    return template_diff.render(result=result)
 
 
 if __name__ == '__main__':

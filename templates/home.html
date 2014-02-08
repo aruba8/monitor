@@ -5,25 +5,51 @@
     <link rel="stylesheet" href="static/c.css"/>
 </head>
 <body>
-<table>
-    <tbody>
-    <tr>
+
+<div id="table1">
+    <span><a href="http://www.immigratemanitoba.com/how-to-immigrate/apply/recruitment-missions/" target="_blank">how-to-immigrate/apply/recruitment-missions/</a> </span>
+    <table id="t1">
+        <tbody>
+        <tr>
         <th>Comparing time</th>
         <th>Result</th>
         <th>difs</th>
     </tr>
-    {% for result in results -%}
-        <tr>
+        {% for result in results1 -%}
+            <tr>
             <td>{{ result['datetime'] }}</td>
-            <td>{% if result['areIdentical'] == 1 %} identical {% else %} not identical {% endif %}</td>
-            <td><a href="/diff?f={{ result['compared_objs'][0] }}&s={{ result['compared_objs'][1] }}" target="_blank">show
-                diff</a></td>
+                <td>{% if result['areIdentical'] == 1 %} identical {% else %}
+                    <span class="warn">not identical </span>{% endif %}</td>
+                <td><a href="/diff?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
+                       target="_blank">show
+                    diff</a></td>
         </tr>
     {%- endfor %}
 
     </tbody>
-</table>
-
-
+    </table>
+</div>
+<div id="table2">
+    <span><a href="http://www.immigratemanitoba.com/how-to-immigrate/apply/exploratory-visits/" target="_blank">/how-to-immigrate/apply/exploratory-visits/</a> </span>
+    <table id="t2">
+        <tbody>
+        <tr>
+            <th>Comparing time</th>
+            <th>Result</th>
+            <th>difs</th>
+        </tr>
+        {% for result in results2 -%}
+            <tr>
+                <td>{{ result['datetime'] }}</td>
+                <td>{% if result['areIdentical'] == 1 %} identical {% else %}
+                    <span class="warn">not identical</span> {% endif %}</td>
+                <td><a href="/diff?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
+                       target="_blank">show
+                    diff</a></td>
+            </tr>
+        {%- endfor %}
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

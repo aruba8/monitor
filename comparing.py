@@ -4,11 +4,15 @@ from diffdb import HtmlDAO
 
 from pymongo import MongoClient
 from lxml import html
+from lxml.html.diff import htmldiff
 
 
 class Comparator:
     def __init__(self, database_diffs):
         self.html_dao = HtmlDAO(database_diffs)
+
+    def show_diff(self, old_diff, new_diff):
+        return htmldiff(old_diff, new_diff)
 
 
     def compare(self, url_type):
