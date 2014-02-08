@@ -33,9 +33,8 @@ def home_1():
 def diffs():
     f_param = request.args['f']
     s_param = request.args['s']
-    comparator = Comparator(db)
     old, new = html_dao.get_html_by_ids(f_param, s_param)
-    result = comparator.show_diff(old['html'], new['html'])
+    result = Comparator.show_diff(old['html'], new['html'])
     return template_diff.render(result=result)
 
 
@@ -43,10 +42,10 @@ def diffs():
 def diffs_c():
     f_param = request.args['f']
     s_param = request.args['s']
-    comparator = Comparator(db)
     old, new = html_dao.get_html_by_ids(f_param, s_param)
-    result = comparator.show_diff(old['div'], new['div'])
+    result = Comparator.show_diff(old['div'], new['div'])
     return template_diff_c.render(result=result)
+
 
 @app.route('/p', methods=['GET'])
 def paging_table():
@@ -60,8 +59,7 @@ def paging_table():
 
     results = html_dao.get_results_skip(url_type, 10, page)
     url = html_dao.get_url_by_url_type(url_type)
-    return template_paging.render(results=results,ut=url_type, url=url, short_url=url[32:], p=page)
-
+    return template_paging.render(results=results, ut=url_type, url=url, short_url=url[32:], p=page)
 
 
 if __name__ == '__main__':

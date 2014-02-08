@@ -18,20 +18,23 @@
             <th>Content dif</th>
         </tr>
         {% for result in results1 -%}
-            <tr>
-                <td>{{ result['time'] }}</td>
-                <td> {{ result['date'] }}</td>
-                <td>{% if result['areIdentical'] == 1 %} identical {% else %}
-                    <span class="warn">not identical </span>{% endif %}</td>
-                <td><a href="/diff?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
-                       target="_blank">show</a></td>
-                <td><a href="/diffc?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
-                       target="_blank">show</a></td>
+        <tr>
+            <td>{{ result['time'] }}</td>
+            <td> {{ result['date'] }}</td>
+            <td>{% if result['areIdentical'] == 1 %} identical {% else %}
+                <span class="warn">not identical </span>{% endif %}
+            </td>
+            <td><a href="/diff?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
+                   target="_blank">show</a></td>
+            <td><a href="/diffc?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
+                   target="_blank">show</a></td>
 
-            </tr>
-    {%- endfor %}
-    <tr><td colspan="5"><a href="p?ut=1"> all </a></td></tr>
-    </tbody>
+        </tr>
+        {%- endfor %}
+        <tr>
+            <td colspan="5"><a href="p?ut=1"> all </a></td>
+        </tr>
+        </tbody>
     </table>
 </div>
 <div id="table2">
@@ -46,18 +49,21 @@
             <th>Content dif</th>
         </tr>
         {% for result in results2 -%}
-            <tr>
-                <td>{{ result['time'] }}</td>
-                <td> {{ result['date'] }}</td>
-                <td>{% if result['areIdentical'] == 1 %} identical {% else %}
-                    <span class="warn">not identical</span> {% endif %}</td>
-                <td><a href="/diff?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
-                       target="_blank">show</a></td>
-                <td><a href="/diffc?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
-                       target="_blank">show</a></td>
-            </tr>
+        <tr>
+            <td>{{ result['time'] }}</td>
+            <td> {{ result['date'] }}</td>
+            <td>{% if result['areIdentical'] == 1 %} identical {% else %}
+                <span class="warn">not identical</span> {% endif %}
+            </td>
+            <td><a href="/diff?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
+                   target="_blank">show</a></td>
+            <td><a href="/diffc?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
+                   target="_blank">show</a></td>
+        </tr>
         {%- endfor %}
-            <tr><td colspan="5"><a href="p?ut=2"> all </a></td></tr>
+        <tr>
+            <td colspan="5"><a href="p?ut=2"> all </a></td>
+        </tr>
         </tbody>
     </table>
 </div>
@@ -73,18 +79,21 @@
             <th>Content dif</th>
         </tr>
         {% for result in results3 -%}
-            <tr>
-                <td>{{ result['time'] }}</td>
-                <td> {{ result['date'] }}</td>
-                <td>{% if result['areIdentical'] == 1 %} identical {% else %}
-                    <span class="warn">not identical</span> {% endif %}</td>
-                <td><a href="/diff?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
-                       target="_blank">show</a></td>
-                <td><a href="/diffc?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
-                       target="_blank">show</a></td>
-            </tr>
+        <tr>
+            <td>{{ result['time'] }}</td>
+            <td> {{ result['date'] }}</td>
+            <td>{% if result['areIdentical'] == 1 %} identical {% else %}
+                <span class="warn">not identical</span> {% endif %}
+            </td>
+            <td><a href="/diff?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
+                   target="_blank">show</a></td>
+            <td><a href="/diffc?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
+                   target="_blank">show</a></td>
+        </tr>
         {%- endfor %}
-            <tr><td colspan="5"> <a href="p?ut=3"> all </a> </td></tr>
+        <tr>
+            <td colspan="5"><a href="p?ut=3"> all </a></td>
+        </tr>
         </tbody>
     </table>
 </div>

@@ -28,7 +28,6 @@ from diffdb import HtmlDAO
 dao = HtmlDAO(database)
 comparator = Comparator(database)
 
-
 if __name__ == '__main__':
     dao.insert_html(get_page_as_string(url1), url1, 1)
     dao.insert_html(get_page_as_string(url2), url2, 2)

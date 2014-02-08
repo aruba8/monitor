@@ -31,7 +31,8 @@ class HtmlDAO:
             print "Error inserting post"
             print "Unexpected error:", sys.exc_info()[0]
 
-    def get_div_content(self, html_string):
+    @staticmethod
+    def get_div_content(html_string):
         htm = html.document_fromstring(html_string)
         elem = htm.xpath('//div[@id="content"]')
         return elem[0].text_content().strip()
