@@ -52,12 +52,11 @@ class Comparator:
             e.send_email(message)
 
 
+if __name__ == '__main__':
+    from pymongo import MongoClient
 
-
-
-        # if __name__ == '__main__':
-        # for testing
-        # client = MongoClient('mongodb://localhost')
-        # hdb = client.diffs
-        # html_dao = HtmlDAO(hdb)
-        # cp = Comparator(hdb)
+    client = MongoClient('mongodb://localhost')
+    hdb = client.diffs
+    html_dao = HtmlDAO(hdb)
+    cp = Comparator(hdb)
+    cp.check(3)
