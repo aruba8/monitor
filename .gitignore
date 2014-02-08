@@ -4,3 +4,5 @@
 configs.ini
 
 config.ini
+
+*.log
