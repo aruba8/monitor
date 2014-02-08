@@ -53,7 +53,11 @@ class HtmlDAO:
         query_current = {'_id': ObjectId(object_id)}
         cur_entry = self.htmls.find_one(query_current)
         query_next = {'datetime': {'$lt': cur_entry['datetime']}, 'urlType': cur_entry['urlType']}
-        return self.htmls.find(query_next).sort('datetime', -1).limit(1)[0]
+        result_set = self.htmls.find(query_next).sort('datetime', -1).limit(1)
+        if len(result_set) == 0:
+            return None
+        else:
+            return result_set[0]
 
     def insert_result(self, are_identical, obj_id1, obj_id2, url_type):
         query_to_insert = {'areIdentical': are_identical,
