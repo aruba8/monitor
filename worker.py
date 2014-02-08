@@ -29,16 +29,16 @@ dao = HtmlDAO(database)
 comparator = Comparator(database)
 
 
-def do_work():
-    for url in urls:
-        htm = get_page_as_string(url[1])
-        dao.insert_html(htm, url[1], url[0])
-        comparator.compare(url[0])
-        comparator.check(url[0])
-
-
 if __name__ == '__main__':
-    do_work()
+    htm = get_page_as_string(url1[1])
+    htm = get_page_as_string(url2[1])
+    htm = get_page_as_string(url3[1])
+    comparator.compare(url1[0])
+    comparator.compare(url2[0])
+    comparator.compare(url3[0])
+    comparator.check(url1[0])
+    comparator.check(url2[0])
+    comparator.check(url3[0])
 
 
 
