@@ -54,7 +54,7 @@ class HtmlDAO:
         cur_entry = self.htmls.find_one(query_current)
         query_next = {'datetime': {'$lt': cur_entry['datetime']}, 'urlType': cur_entry['urlType']}
         result_set = self.htmls.find(query_next).sort('datetime', -1).limit(1)
-        if len(result_set) == 0:
+        if result_set.count() == 0:
             return None
         else:
             return result_set[0]
