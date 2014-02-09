@@ -63,5 +63,6 @@ def paging_table():
 
 
 if __name__ == '__main__':
+    #start server
     app.debug = True
     app.run()
