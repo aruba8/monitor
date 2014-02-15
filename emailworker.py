@@ -27,7 +27,6 @@ class Emailer():
         message['To'] = self.to.__str__()
         return message
 
-
     def send_email(self, message):
         try:
             smtp = smtplib.SMTP_SSL('smtp.yandex.ru', 465, timeout=10)
@@ -38,4 +37,3 @@ class Emailer():
             print "Successfully sent email"
         except smtplib.SMTPException:
             print "Error: unable to send email"
-

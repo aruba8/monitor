@@ -97,5 +97,34 @@
         </tbody>
     </table>
 </div>
+<div id="table4">
+    <span>All changes will appear here</span>
+    <table id="t4">
+        <tbody>
+        <tr>
+            <th>Time</th>
+            <th>Date</th>
+            <th>Result</th>
+            <th>Full dif</th>
+            <th>Content dif</th>
+        </tr>
+        {% for result in results4 -%}
+        <tr>
+            <td>{{ result['time'] }}</td>
+            <td> {{ result['date'] }}</td>
+            <td>{% if result['areIdentical'] == 1 %} identical {% else %}
+                <span class="warn">not identical</span> {% endif %}
+            </td>
+            <td><a href="/diff?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
+                   target="_blank">show</a></td>
+            <td><a href="/diffc?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
+                   target="_blank">show</a></td>
+        </tr>
+        {%- endfor %}
+        <tr>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

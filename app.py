@@ -26,7 +26,8 @@ def home_1():
     results1 = html_dao.get_results(1)
     results2 = html_dao.get_results(2)
     results3 = html_dao.get_results(3)
-    return template_home.render(results1=results1, results2=results2, results3=results3)
+    results4 = html_dao.get_all_not_identical()
+    return template_home.render(results1=results1, results2=results2, results3=results3, results4=results4)
 
 
 @app.route('/diff', methods=['GET'])

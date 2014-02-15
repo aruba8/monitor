@@ -37,6 +37,10 @@ class HtmlDAO:
         elem = htm.xpath('//div[@id="content"]')
         return elem[0].text_content().strip()
 
+    def get_all_not_identical(self):
+        query = {'areIdentical': 0}
+        return self.results.find(query).sort('datetime', -1).limit(10)
+
     def get_two_last_entries(self, url_type):
         query = {'urlType': url_type}
         cursor = self.htmls.find(query).sort('datetime', -1).limit(2)

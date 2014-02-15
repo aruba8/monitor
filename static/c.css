@@ -25,6 +25,10 @@ table, th, td {
     float: left;
 }
 
+#table4 {
+    float: right;
+}
+
 table {
     border-collapse: collapse;
 }
