@@ -1,18 +1,18 @@
 #!/bin/bash
 #
 
-mkdir -p logs_app/old
+mkdir -p logs_worker/old
 
 
-PROGRAM="app.py"
+PROGRAM="worker.py"
 CURDATE=$(date +"%Y_%m_%d_%H%M%S")
-LOGFILE=logs_app/monitor${CURDATE}.log
-JA_PID=monitor.pid
+LOGFILE=logs_worker/worker${CURDATE}.log
+JA_PID=worker.pid
 PROG_BIN="python $PROGRAM"
 PID=`ps -aef | grep "$PROGRAM" | grep -v grep | awk '{print $2}'`
 
 #move logs modified more than 24h ago to logs/old folder
-find logs_app/ -maxdepth 1 -type f -mtime +1 -name "*.log*" -exec mv {} logs_app/old >/dev/null 2>&1 \;
+find logs_worker/ -maxdepth 1 -type f -mtime +1 -name "*.log*" -exec mv {} logs_worker/old >/dev/null 2>&1 \;
 
 
 case "$1" in
@@ -21,26 +21,26 @@ case "$1" in
     if [ ! -z ${PID} ]
     then
         echo -n " "
-        echo -n "Server monitor is running"
+        echo -n "Worker is running"
         echo " "
     else
-        echo -n "Starting server monitor: "
+        echo -n "Starting worker: "
         echo ""
         ${PROG_BIN} > ${LOGFILE} 2>&1 &
         echo $! > ${JA_PID}
-        echo "Server monitor started. PID:$!"
+        echo "Worker started. PID:$!"
         echo "Logfile is : $LOGFILE"
         echo ""
     fi
     ;;
   stop)
-    echo -n "Shutting down monitor server: "
+    echo -n "Shutting down worker: "
     echo ""
     for i in ${PID}; do
         kill -9 ${i}
         rm -f ${JA_PID}
     done
-    echo -n "Server monitor is down."
+    echo -n "Worker is down."
     echo ""
     ;;
   restart)
@@ -52,19 +52,19 @@ case "$1" in
     STATUS=`ps -aef | grep "$PROGRAM" | grep -v grep | awk '{print $2}' | head -1`
     if [ ! -z ${STATUS} ]
     then
-        echo -n "Server monitor is running"
+        echo -n "Worker is running"
         echo ""
         for i in ${PID}; do
             echo PID:${i}
         done
         echo ""
     else
-        echo -n "Server monitor is down."
+        echo -n "Worker is down."
         echo ""
     fi
     ;;
   *)
-    echo "Usage: monitor.sh {start|stop|restart|status}"
+    echo "Usage: worker.sh {start|stop|restart|status}"
     exit 1
 
 esac
