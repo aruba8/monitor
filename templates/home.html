@@ -7,93 +7,58 @@
 <body>
 
 <div id="table1" class="tt">
-    <span><a href="http://www.immigratemanitoba.com/how-to-immigrate/apply/recruitment-missions/" target="_blank">how-to-immigrate/apply/recruitment-missions/</a> </span>
     <table id="t1">
         <tbody>
         <tr>
-            <th>Time</th>
-            <th>Date</th>
+            <th>Verification date</th>
+            <th>Verification time</th>
             <th>Result</th>
-            <th>Full dif</th>
-            <th>Content dif</th>
+            <th>Url Type</th>
+            <th>Link</th>
+            <th>All checks</th>
         </tr>
         {% for result in results1 -%}
         <tr>
-            <td>{{ result['time'] }}</td>
             <td> {{ result['date'] }}</td>
+            <td> {{ result['time'] }}</td>
             <td>{% if result['areIdentical'] == 1 %} identical {% else %}
                 <span class="warn">not identical </span>{% endif %}
             </td>
-            <td><a href="/diff?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
-                   target="_blank">show</a></td>
-            <td><a href="/diffc?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
-                   target="_blank">show</a></td>
+            <td>{{ result['urlType'] }}</td>
+            <td><a href="http://www.immigratemanitoba.com/how-to-immigrate/apply/recruitment-missions/" target="_blank">link</a>
+            </td>
+            <td><a href="p?ut=1"> all </a></td>
 
         </tr>
         {%- endfor %}
-        <tr>
-            <td colspan="5"><a href="p?ut=1"> all </a></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<div id="table2" class="tt">
-    <span><a href="http://www.immigratemanitoba.com/how-to-immigrate/apply/exploratory-visits/" target="_blank">/how-to-immigrate/apply/exploratory-visits/</a> </span>
-    <table id="t2">
-        <tbody>
-        <tr>
-            <th>Time</th>
-            <th>Date</th>
-            <th>Result</th>
-            <th>Full dif</th>
-            <th>Content dif</th>
-        </tr>
         {% for result in results2 -%}
         <tr>
-            <td>{{ result['time'] }}</td>
             <td> {{ result['date'] }}</td>
+            <td> {{ result['time'] }}</td>
             <td>{% if result['areIdentical'] == 1 %} identical {% else %}
-                <span class="warn">not identical</span> {% endif %}
+                <span class="warn">not identical </span>{% endif %}
             </td>
-            <td><a href="/diff?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
-                   target="_blank">show</a></td>
-            <td><a href="/diffc?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
-                   target="_blank">show</a></td>
+            <td>{{ result['urlType'] }}</td>
+            <td><a href="http://www.immigratemanitoba.com/how-to-immigrate/apply/exploratory-visits/" target="_blank">link</a>
+            </td>
+            <td><a href="p?ut=2"> all </a></td>
+
         </tr>
         {%- endfor %}
-        <tr>
-            <td colspan="5"><a href="p?ut=2"> all </a></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<div id="table3" class="tt">
-    <span><a href="http://www.immigratemanitoba.com/how-to-immigrate/mpnp-resources/" target="_blank">/how-to-immigrate/mpnp-resources/</a> </span>
-    <table id="t3">
-        <tbody>
-        <tr>
-            <th>Time</th>
-            <th>Date</th>
-            <th>Result</th>
-            <th>Full dif</th>
-            <th>Content dif</th>
-        </tr>
         {% for result in results3 -%}
         <tr>
-            <td>{{ result['time'] }}</td>
             <td> {{ result['date'] }}</td>
+            <td> {{ result['time'] }}</td>
             <td>{% if result['areIdentical'] == 1 %} identical {% else %}
-                <span class="warn">not identical</span> {% endif %}
+                <span class="warn">not identical </span>{% endif %}
             </td>
-            <td><a href="/diff?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
-                   target="_blank">show</a></td>
-            <td><a href="/diffc?f={{ result['compared_objs'][1] }}&s={{ result['compared_objs'][0] }}"
-                   target="_blank">show</a></td>
+            <td>{{ result['urlType'] }}</td>
+            <td><a href="http://www.immigratemanitoba.com/how-to-immigrate/mpnp-resources/" target="_blank">link</a>
+            </td>
+            <td><a href="p?ut=3"> all </a></td>
+
         </tr>
         {%- endfor %}
-        <tr>
-            <td colspan="5"><a href="p?ut=3"> all </a></td>
-        </tr>
         </tbody>
     </table>
 </div>
@@ -102,6 +67,7 @@
     <table id="t4">
         <tbody>
         <tr>
+            <th>UrlType</th>
             <th>Time</th>
             <th>Date</th>
             <th>Result</th>
@@ -110,6 +76,7 @@
         </tr>
         {% for result in results4 -%}
         <tr>
+            <td> {{ result['urlType'] }}</td>
             <td>{{ result['time'] }}</td>
             <td> {{ result['date'] }}</td>
             <td>{% if result['areIdentical'] == 1 %} identical {% else %}
