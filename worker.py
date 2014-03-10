@@ -2,7 +2,7 @@
 
 __author__ = 'erik'
 
-from urllib2 import urlopen
+from urllib2 import urlopen, URLError
 import time
 from datetime import datetime
 
@@ -21,10 +21,11 @@ def do_job():
     comparator.check(1)
     comparator.check(2)
     comparator.check(3)
-    print('Job ended')
+    print(str(datetime.now()) + ' Job ended')
 
 
-schedule.every(1).hours.do(do_job)
+# schedule.every(1).hours.do(do_job)
+schedule.every(5).minutes.do(do_job)
 
 connection_string = "mongodb://localhost"
 connection = MongoClient(connection_string)
@@ -38,7 +39,11 @@ urls = [url1, url2, url3]
 
 
 def get_page_as_string(url):
-    return urlopen(url).read().strip()
+    try:
+        return urlopen(url).read().strip()
+    except URLError:
+        print(str(datetime.now()) + ' could not open page : ' + url)
+        return "could not open page"
 
 
 from comparing import Comparator

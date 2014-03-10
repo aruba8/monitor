@@ -16,6 +16,8 @@ class HtmlDAO:
         return self.htmls.find_one({'_id': ObjectId(old)}), self.htmls.find_one({'_id': ObjectId(new)})
 
     def insert_html(self, html_string, url, url_type):
+        if html_string == "could not open page":
+            return
         dt = datetime.now()
         query = {'html': html_string,
                  'datetime': dt,
