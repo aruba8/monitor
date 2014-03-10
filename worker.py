@@ -24,8 +24,7 @@ def do_job():
     print(str(datetime.now()) + ' Job ended')
 
 
-# schedule.every(1).hours.do(do_job)
-schedule.every(5).minutes.do(do_job)
+schedule.every(1).hours.do(do_job)
 
 connection_string = "mongodb://localhost"
 connection = MongoClient(connection_string)
