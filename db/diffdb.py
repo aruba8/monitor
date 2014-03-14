@@ -6,6 +6,11 @@ from datetime import datetime
 from bson.objectid import ObjectId
 from lxml import html
 
+from utils.logerconf import Logger
+
+logger = Logger()
+log = logger.get_logger()
+
 
 class HtmlDAO:
     def __init__(self, database_diffs):
@@ -30,8 +35,7 @@ class HtmlDAO:
         try:
             self.htmls.insert(query)
         except:
-            print "Error inserting post"
-            print "Unexpected error:", sys.exc_info()[0]
+            log.error('Error inserting post' + sys.exc_info()[0])
 
     @staticmethod
     def get_div_content(html_string):

@@ -1,17 +1,19 @@
-#!/usr/bin/python
-
 __author__ = 'erik'
 
 from urllib2 import urlopen, URLError
 import time
-from datetime import datetime
 
 from pymongo import MongoClient
 import schedule
 
+from utils.logerconf import Logger
+
+logger = Logger()
+log = logger.get_logger()
+
 
 def do_job():
-    print(str(datetime.now()) + ' Job started')
+    log.info('Job started')
     dao.insert_html(get_page_as_string(url1), url1, 1)
     dao.insert_html(get_page_as_string(url2), url2, 2)
     dao.insert_html(get_page_as_string(url3), url3, 3)
@@ -21,10 +23,11 @@ def do_job():
     comparator.check(1)
     comparator.check(2)
     comparator.check(3)
-    print(str(datetime.now()) + ' Job ended')
+    log.info('Job ended')
 
 
-schedule.every(1).hours.do(do_job)
+schedule.every(1).minutes.do(do_job)
+# schedule.every(1).hours.do(do_job)
 
 connection_string = "mongodb://localhost"
 connection = MongoClient(connection_string)
@@ -41,12 +44,12 @@ def get_page_as_string(url):
     try:
         return urlopen(url).read().strip()
     except URLError:
-        print(str(datetime.now()) + ' could not open page : ' + url)
+        log.error(' could not open page : ' + url)
         return "could not open page"
 
 
-from comparing import Comparator
-from diffdb import HtmlDAO
+from workers.comparing import Comparator
+from db.diffdb import HtmlDAO
 
 dao = HtmlDAO(database)
 comparator = Comparator(database)

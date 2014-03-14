@@ -7,6 +7,10 @@ import os
 __author__ = 'erik'
 
 import smtplib
+from utils.logerconf import Logger
+
+logger = Logger()
+log = logger.get_logger()
 
 
 class Emailer():
@@ -34,6 +38,6 @@ class Emailer():
             smtp.login(self.login, self.password)
             smtp.sendmail(message['From'], self.to, message.as_string())
             smtp.close()
-            print "Successfully sent email"
+            log.info('Successfully sent email')
         except smtplib.SMTPException:
-            print "Error: unable to send email"
+            log.error('Error: unable to send email')

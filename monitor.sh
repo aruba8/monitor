@@ -3,6 +3,8 @@
 
 mkdir -p logs_app/old
 
+CURRPATH=$(pwd)
+export PYTHONPATH=${CURRPATH}:${CURRPATH}/db:${CURRPATH}/workers:${CURRPATH}/utils
 
 PROGRAM="app.py"
 CURDATE=$(date +"%Y_%m_%d_%H%M%S")

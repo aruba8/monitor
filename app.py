@@ -11,12 +11,12 @@ template_diff_c = env.get_template('diffc.html')
 template_paging = env.get_template('p.html')
 
 from pymongo import MongoClient
-from comparing import Comparator
+from workers.comparing import Comparator
 
 
 client = MongoClient('mongodb://localhost')
 db = client.diffs
-from diffdb import HtmlDAO
+from db.diffdb import HtmlDAO
 
 html_dao = HtmlDAO(db)
 

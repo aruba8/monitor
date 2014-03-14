@@ -1,10 +1,12 @@
 __author__ = 'erik'
 
-from datetime import datetime
-
 from lxml.html.diff import htmldiff
 
-from diffdb import HtmlDAO
+from db.diffdb import HtmlDAO
+from utils.logerconf import Logger
+
+logger = Logger()
+log = logger.get_logger()
 
 
 class Comparator:
@@ -17,7 +19,7 @@ class Comparator:
 
     def compare(self, url_type):
         docs_to_compare = self.html_dao.get_unchecked_by_type(url_type)
-        print(str(datetime.now()) + " Started comparison. Docs to compare : " + str(docs_to_compare.count()))
+        log.info("Started comparison. Docs to compare : " + str(docs_to_compare.count()))
         for doc in docs_to_compare:
             prev_doc = self.html_dao.get_next_lower_entry(doc['_id'])
             if prev_doc is None:
@@ -36,7 +38,7 @@ class Comparator:
 
     def check(self, url_type):
         result = self.html_dao.get_results(url_type)[0]
-        from emailworker import Emailer
+        from workers.emailworker import Emailer
 
         e = Emailer()
         if result['areIdentical'] == 0:

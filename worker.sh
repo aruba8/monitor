@@ -2,13 +2,14 @@
 #
 
 mkdir -p logs_worker/old
-
-
+CURRPATH=$(pwd)
+export PYTHONPATH=${CURRPATH}:${CURRPATH}/db:${CURRPATH}/workers:${CURRPATH}/utils
+WORKERS_DIR=workers
 PROGRAM="worker.py"
 CURDATE=$(date +"%Y_%m_%d_%H%M%S")
 LOGFILE=logs_worker/worker${CURDATE}.log
 JA_PID=worker.pid
-PROG_BIN="python $PROGRAM"
+PROG_BIN="python ${WORKERS_DIR}/${PROGRAM}"
 PID=`ps -aef | grep "$PROGRAM" | grep -v grep | awk '{print $2}'`
 
 #move logs modified more than 24h ago to logs/old folder
