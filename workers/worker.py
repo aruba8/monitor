@@ -8,6 +8,7 @@ import schedule
 
 from utils.logerconf import Logger
 
+
 logger = Logger()
 log = logger.get_logger()
 
@@ -26,8 +27,8 @@ def do_job():
     log.info('Job ended')
 
 
-schedule.every(1).minutes.do(do_job)
-# schedule.every(1).hours.do(do_job)
+# schedule.every(1).minutes.do(do_job)
+schedule.every(1).hours.do(do_job)
 
 connection_string = "mongodb://localhost"
 connection = MongoClient(connection_string)
