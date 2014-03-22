@@ -12,22 +12,21 @@ template_paging = env.get_template('p.html')
 
 from pymongo import MongoClient
 from workers.comparing import Comparator
-
+from db.diffdb import HtmlDAO
+from utils.configparser import Parser
 
 client = MongoClient('mongodb://localhost')
 db = client.diffs
-from db.diffdb import HtmlDAO
-
 html_dao = HtmlDAO(db)
+
+config = Parser()
 
 
 @app.route('/')
 def home_1():
-    results1 = html_dao.get_results_skip(1, 1, 0)
-    results2 = html_dao.get_results_skip(2, 1, 0)
-    results3 = html_dao.get_results_skip(3, 1, 0)
-    results4 = html_dao.get_all_not_identical()
-    return template_home.render(results1=results1, results2=results2, results3=results3, results4=results4)
+    results = get_all_results()
+    change_results = html_dao.get_all_not_identical()
+    return template_home.render(results=results, change_results=change_results)
 
 
 @app.route('/diff', methods=['GET'])
@@ -61,6 +60,15 @@ def paging_table():
     results = html_dao.get_results_skip(url_type, 10, page)
     url = html_dao.get_url_by_url_type(url_type)
     return template_paging.render(results=results, ut=url_type, url=url, short_url=url[32:], p=page)
+
+
+def get_all_results():
+    results = []
+    for i in range(len(config.get_urls_as_list())):
+        item = html_dao.get_results_skip(i + 1, 1, 0)[0]
+        item['url'] = html_dao.get_url_by_url_type(i + 1)
+        results.append(item)
+    return results
 
 
 if __name__ == '__main__':

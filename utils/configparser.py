@@ -13,6 +13,7 @@ class Parser:
         self.login = self.config.get('EmailConfigs', 'sender')
         self.password = self.config.get('EmailConfigs', 'password')
         self.to = self.config.get('EmailConfigs', 'to').split(',')
+        self.urls = self.config.get('URLS', 'urls')
 
     def get_login(self):
         return self.login
@@ -23,6 +24,5 @@ class Parser:
     def get_to(self):
         return self.to
 
-
-
-
+    def get_urls_as_list(self):
+        return self.urls.split(',')

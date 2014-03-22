@@ -17,7 +17,7 @@
             <th>Link</th>
             <th>All checks</th>
         </tr>
-        {% for result in results1 -%}
+        {% for result in results -%}
         <tr>
             <td> {{ result['date'] }}</td>
             <td> {{ result['time'] }}</td>
@@ -25,38 +25,9 @@
                 <span class="warn">not identical </span>{% endif %}
             </td>
             <td>{{ result['urlType'] }}</td>
-            <td><a href="http://www.immigratemanitoba.com/how-to-immigrate/apply/recruitment-missions/" target="_blank">link</a>
+            <td><a href="{{ result['url'] }}" target="_blank">link</a>
             </td>
-            <td><a href="p?ut=1"> all </a></td>
-
-        </tr>
-        {%- endfor %}
-        {% for result in results2 -%}
-        <tr>
-            <td> {{ result['date'] }}</td>
-            <td> {{ result['time'] }}</td>
-            <td>{% if result['areIdentical'] == 1 %} identical {% else %}
-                <span class="warn">not identical </span>{% endif %}
-            </td>
-            <td>{{ result['urlType'] }}</td>
-            <td><a href="http://www.immigratemanitoba.com/how-to-immigrate/apply/exploratory-visits/" target="_blank">link</a>
-            </td>
-            <td><a href="p?ut=2"> all </a></td>
-
-        </tr>
-        {%- endfor %}
-        {% for result in results3 -%}
-        <tr>
-            <td> {{ result['date'] }}</td>
-            <td> {{ result['time'] }}</td>
-            <td>{% if result['areIdentical'] == 1 %} identical {% else %}
-                <span class="warn">not identical </span>{% endif %}
-            </td>
-            <td>{{ result['urlType'] }}</td>
-            <td><a href="http://www.immigratemanitoba.com/how-to-immigrate/mpnp-resources/" target="_blank">link</a>
-            </td>
-            <td><a href="p?ut=3"> all </a></td>
-
+            <td><a href="p?ut={{ result['urlType'] }}"> all </a></td>
         </tr>
         {%- endfor %}
         </tbody>
@@ -74,7 +45,7 @@
             <th>Full dif</th>
             <th>Content dif</th>
         </tr>
-        {% for result in results4 -%}
+        {% for result in change_results -%}
         <tr>
             <td> {{ result['urlType'] }}</td>
             <td>{{ result['time'] }}</td>
