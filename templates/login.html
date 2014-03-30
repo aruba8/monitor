@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+{% if error is defined %}
+{{error}}
+{% endif %}
+<form action="/login" method="post">
+    <input type="text" name="username">
+    <input type="password" name="password">
+    <input type="submit" name="submit">
+</form>
+
+</body>
+</html>

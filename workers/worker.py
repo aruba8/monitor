@@ -25,8 +25,9 @@ def do_job():
         comparator.check(i + 1)
     log.info('Job ended')
 
-# schedule.every(1).minutes.do(do_job)
-schedule.every(1).hours.do(do_job)
+
+schedule.every(1).minutes.do(do_job)
+# schedule.every(1).hours.do(do_job)
 
 connection_string = "mongodb://localhost"
 connection = MongoClient(connection_string)
