@@ -37,7 +37,10 @@ class Comparator:
             self.html_dao.set_as_checked(doc['_id'])
 
     def check(self, url_type):
-        result = self.html_dao.get_results(url_type)[0]
+        pres = self.html_dao.get_results(url_type)
+        if pres.count() == 0:
+            return
+        result = pres[0]
         from workers.emailworker import Emailer
 
         e = Emailer()

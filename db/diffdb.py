@@ -17,6 +17,8 @@ class HtmlDAO:
     def __init__(self, database_diffs):
         self.htmls = database_diffs.htmls
         self.results = database_diffs.results
+        self.database_diffs = database_diffs
+        self.urls = database_diffs.urls
 
     def get_html_by_ids(self, old, new):
         return self.htmls.find_one({'_id': ObjectId(old)}), self.htmls.find_one({'_id': ObjectId(new)})
@@ -88,9 +90,22 @@ class HtmlDAO:
         return self.results.find(query).sort('datetime', -1).limit(10)
 
     def get_results_skip(self, url_type, limit_number, number_to_skip):
+        if url_type is not ObjectId:
+            url_type = ObjectId(url_type)
         query = {'urlType': url_type}
         return self.results.find(query).sort('datetime', -1).limit(limit_number).skip(number_to_skip)
 
     def get_url_by_url_type(self, url_type):
-        query = {'urlType': url_type}
-        return self.htmls.find(query).sort('datetime', -1).limit(1)[0]['url']
+        if url_type is not ObjectId:
+            url_type = ObjectId(url_type)
+
+        query = {'_id': url_type}
+        return self.urls.find_one(query)
+
+    def get_all_active_results(self):
+        from workers.admin import Admin
+
+        admin_worker = Admin(self.database_diffs)
+        url_list = admin_worker.get_all_active_url_ids()
+        query = {'urlType': {'$in': url_list}}
+        return self.results.find(query).sort('datetime', -1).limit(len(url_list))

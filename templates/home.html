@@ -13,7 +13,7 @@
             <th>Verification date</th>
             <th>Verification time</th>
             <th>Result</th>
-            <th>Url Type</th>
+            <th>Url</th>
             <th>Link</th>
             <th>All checks</th>
         </tr>
@@ -24,7 +24,7 @@
             <td>{% if result['areIdentical'] == 1 %} identical {% else %}
                 <span class="warn">not identical </span>{% endif %}
             </td>
-            <td>{{ result['urlType'] }}</td>
+            <td>{{ result['url'] }}</td>
             <td><a href="{{ result['url'] }}" target="_blank">link</a>
             </td>
             <td><a href="p?ut={{ result['urlType'] }}"> all </a></td>
@@ -38,7 +38,7 @@
     <table id="t4">
         <tbody>
         <tr>
-            <th>UrlType</th>
+            <th>Url</th>
             <th>Time</th>
             <th>Date</th>
             <th>Result</th>
@@ -47,7 +47,7 @@
         </tr>
         {% for result in change_results -%}
         <tr>
-            <td> {{ result['urlType'] }}</td>
+            <td> {{ result['url'] }}</td>
             <td>{{ result['time'] }}</td>
             <td> {{ result['date'] }}</td>
             <td>{% if result['areIdentical'] == 1 %} identical {% else %}

@@ -2,7 +2,13 @@ import os
 
 from flask import Flask, request, redirect, session
 from jinja2 import Environment, PackageLoader
+from bson.objectid import ObjectId
 
+from utils.logerconf import Logger
+
+
+logger = Logger()
+log = logger.get_logger()
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -32,7 +38,7 @@ config = Parser()
 @app.route('/')
 def home_1():
     results = get_all_results()
-    change_results = html_dao.get_all_not_identical()
+    change_results = get_all_changed_results()
     return template_home.render(results=results, change_results=change_results)
 
 
@@ -57,7 +63,7 @@ def diffs_c():
 @app.route('/p', methods=['GET'])
 def paging_table():
     args = request.args
-    url_type = int(args['ut'])
+    url_type = args['ut']
     page = 0
     if 'p' in args:
         page = int(args['p'])
@@ -65,7 +71,7 @@ def paging_table():
         page = 0
 
     results = html_dao.get_results_skip(url_type, 10, page)
-    url = html_dao.get_url_by_url_type(url_type)
+    url = html_dao.get_url_by_url_type(ObjectId(url_type))['url']
     return template_paging.render(results=results, ut=url_type, url=url, short_url=url[32:], p=page)
 
 
@@ -142,9 +148,18 @@ def signup_page():
 
 def get_all_results():
     results = []
-    for i in range(len(config.get_urls_as_list())):
-        item = html_dao.get_results_skip(i + 1, 1, 0)[0]
-        item['url'] = html_dao.get_url_by_url_type(i + 1)
+    for i in html_dao.get_all_active_results():
+        item = i
+        item['url'] = html_dao.get_url_by_url_type(i['urlType'])['url']
+        results.append(item)
+    return results
+
+
+def get_all_changed_results():
+    results = []
+    for i in html_dao.get_all_not_identical():
+        item = i
+        item['url'] = html_dao.get_url_by_url_type(i['urlType'])['url']
         results.append(item)
     return results
 

@@ -37,3 +37,12 @@ class Admin:
         query = {'_id': ObjectId(url_id)}
         upd_query = {'$set': {'active': 0}}
         self.urls.update(query, upd_query)
+
+    def get_all_active_url_ids(self):
+        query = {'active': 1}
+        show_query = {'_id': True}
+        urls = self.urls.find(query, show_query)
+        urls_list = []
+        for url in urls:
+            urls_list.append(url['_id'])
+        return urls_list
