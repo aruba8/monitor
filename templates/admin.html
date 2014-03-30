@@ -2,9 +2,48 @@
 <html>
 <head>
     <title></title>
+    <link rel="stylesheet" href="static/c.css"/>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
 </head>
 <body>
 <h2>ADMIN PAGE</h2>
+
+<div class="add-url">
+    <form action="/admin" method="post">
+        <label>URL to add: </label><input id="url" type="text" name="url">
+        <input type="submit">
+    </form>
+</div>
+
+<table>
+    <tbody>
+
+    <tr>
+        <th>URL</th>
+        <th>Added Time</th>
+        <th>Action</th>
+    </tr>
+    {% for url in urls -%}
+    <tr>
+        <td>{{ url['url'] }}</td>
+        <td>{{ url['datetime'] }}</td>
+        <td><a href="#" name="{{ url['_id'] }}">remove</a></td>
+    </tr>
+    {%- endfor %}
+    </tbody>
+</table>
+
+
+<div id="dialog-confirm" title="Are you shure you want to remove this URL?">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>These items will be
+        permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+<script src="static/j.js">
+</script>
+
 
 </body>
 </html>

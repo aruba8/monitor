@@ -8,6 +8,7 @@ from lxml import html
 
 from utils.logerconf import Logger
 
+
 logger = Logger()
 log = logger.get_logger()
 
@@ -35,7 +36,7 @@ class HtmlDAO:
         try:
             self.htmls.insert(query)
         except:
-            log.error('Error inserting post' + sys.exc_info()[0])
+            log.error('Error inserting data' + sys.exc_info()[0])
 
     @staticmethod
     def get_div_content(html_string):

@@ -56,4 +56,16 @@ del {
     border: 1px solid #000000;
 }
 
+.add-url {
+    margin: 0 auto;
+    display: inline;
+    text-align: center;
+}
 
+.add-url form {
+    padding-bottom: 15px;
+}
+
+#url {
+    width: 500px;
+}

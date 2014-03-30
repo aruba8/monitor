@@ -21,11 +21,11 @@ from workers.comparing import Comparator
 from workers.session import Sessions
 from db.diffdb import HtmlDAO
 from utils.configparser import Parser
+from workers.admin import Admin
 
 client = MongoClient('mongodb://localhost')
 db = client.diffs
 html_dao = HtmlDAO(db)
-
 config = Parser()
 
 
@@ -73,14 +73,26 @@ def paging_table():
 def admin_page():
     if 'username' not in session:
         return redirect('/login')
+    admin_worker = Admin(db)
     username_cookies = session['username']
-    print(username_cookies)
-    sessions = Sessions(db)
-    username = sessions.login_check(username_cookies)
+    sessions_worker = Sessions(db)
+    username = sessions_worker.login_check(username_cookies)
     if username is None:
         return redirect('/login')
 
-    return template_admin_page.render()
+    if request.method == 'GET':
+        urls = admin_worker.get_all_active_urls()
+
+        return template_admin_page.render(urls=urls)
+    elif request.method == 'POST':
+        url_id = request.form.get('url_to_delete')
+        if url_id is not None:
+            admin_worker.remove_url(url_id)
+        url = request.form['url']
+        if url is None or url == '':
+            return redirect('/admin')
+        admin_worker.add_url(url)
+        return redirect('/admin')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -96,13 +108,11 @@ def login_page():
         validation = sessions.validate_login(username, password, user_record)
         if validation:
             session_id = sessions.start_session(username)
-            print(session_id)
             if session_id == -1:
                 return redirect('/internal_error')
 
             cookie = sessions.make_secure_val(session_id)
             session['username'] = cookie
-            print(cookie)
             return redirect('/admin')
         else:
             return template_login.render(error='User not in database')

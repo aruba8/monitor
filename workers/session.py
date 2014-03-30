@@ -8,6 +8,10 @@ import string
 import hashlib
 
 from bson.objectid import ObjectId
+from utils.logerconf import Logger
+
+logger = Logger()
+log = logger.get_logger()
 
 
 class Sessions:
@@ -21,12 +25,12 @@ class Sessions:
         try:
             _id = ObjectId(session_id)
         except:
-            print "bad sessionid passed in"
+            log.info("bad sessionid passed in")
             return None
 
         session = self.sessions.find_one({'_id': _id})
 
-        print "returning a session or none"
+        log.info("returning a session or none")
         return session
 
     def start_session(self, username):
@@ -35,7 +39,7 @@ class Sessions:
         try:
             self.sessions.insert(session, safe=True)
         except:
-            print "Unexpected error on start_session:"
+            log.error("Unexpected error on start_session:")
             return -1
 
         return str(session['_id'])
@@ -57,13 +61,13 @@ class Sessions:
         user = users.find_one({'_id': username})
 
         if user is None:
-            print "User not in database"
+            log.warn("User not in database")
             return False
 
         salt = user['password'].split(',')[1]
 
         if user['password'] != self.make_pw_hash(password, salt):
-            print "user password is not a match"
+            log.warn("user password is not a match")
             return False
 
         # looks good
@@ -93,14 +97,14 @@ class Sessions:
     def login_check(self, cookie):
 
         if cookie is None:
-            print "no cookie..."
+            log.info("no cookie...")
             return None
 
         else:
             session_id = self.check_secure_val(cookie)
 
             if session_id is None:
-                print "no secure session_id"
+                log.info("no secure session_id")
                 return None
 
             else:
@@ -135,10 +139,10 @@ class Sessions:
         try:
             users.insert(user, safe=True)
         except errors.DuplicateKeyError:
-            print "oops, username is already taken"
+            log.error("oops, username: " + user + " is already taken")
             return False
         except errors.OperationFailure:
-            print "oops, mongo error"
+            log.error("oops, mongo error")
             return False
 
         return True
