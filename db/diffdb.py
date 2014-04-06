@@ -43,7 +43,7 @@ class HtmlDAO:
     @staticmethod
     def get_div_content(html_string):
         htm = html.document_fromstring(html_string)
-        elem = htm.xpath('//div[@id="content"]')
+        elem = htm.xpath('//div[@id="container"]')
         return elem[0].text_content().strip()
 
     def get_all_not_identical(self):
