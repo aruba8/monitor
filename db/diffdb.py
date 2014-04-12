@@ -109,3 +109,7 @@ class HtmlDAO:
         url_list = admin_worker.get_all_active_url_ids()
         query = {'urlType': {'$in': url_list}}
         return self.results.find(query).sort('datetime', -1).limit(len(url_list))
+
+    def get_all_changed_skip(self, number_to_skip):
+        query = {'areIdentical': 0}
+        return self.results.find(query).sort('datetime', -1).limit(10).skip(number_to_skip)

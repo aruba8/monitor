@@ -21,6 +21,7 @@ template_paging = env.get_template('p.html')
 template_admin_page = env.get_template('admin.html')
 template_login = env.get_template('login.html')
 template_signup = env.get_template('signup.html')
+template_all_changed = env.get_template('cp.html')
 
 from pymongo import MongoClient
 from workers.comparing import Comparator
@@ -73,6 +74,19 @@ def paging_table():
     results = html_dao.get_results_skip(url_type, 10, page)
     url = html_dao.get_url_by_url_type(ObjectId(url_type))['url']
     return template_paging.render(results=results, ut=url_type, url=url, short_url=url[32:], p=page)
+
+
+@app.route('/cp', methods=['GET'])
+def all_changes():
+    args = request.args
+    page = 0
+    if 'p' in args:
+        page = int(args['p'])
+    if page < 0:
+        page = 0
+    results = html_dao.get_all_changed_skip(page)
+
+    return template_all_changed.render(results=results, p=page)
 
 
 @app.route('/admin', methods=['GET', 'POST'])
