@@ -15,6 +15,7 @@
         <tr>
             <th>Time</th>
             <th>Date</th>
+            <th>URL</th>
             <th>Result</th>
             <th>Full dif</th>
             <th>Content dif</th>
@@ -23,6 +24,7 @@
         <tr>
             <td>{{ result['time'] }}</td>
             <td> {{ result['date'] }}</td>
+            <td><a href="{{ result['url'] }}" target="_blank">{{ result['url'] }}</a></td>
             <td>{% if result['areIdentical'] == 1 %} identical {% else %}
                 <span class="warn">not identical</span> {% endif %}
             </td>
@@ -33,7 +35,7 @@
         </tr>
         {%- endfor %}
         <tr>
-            <td colspan="5"> {% if p <= 0 %}{% else %}<a href="/cp?p={{p-10}}"> <<< </a>{% endif %} ---- <a
+            <td colspan="6"> {% if p <= 0 %}{% else %}<a href="/cp?p={{p-10}}"> <<< </a>{% endif %} ---- <a
                     href="/cp?p={{p+10}}"> >>></a></td>
         </tr>
         </tbody>

@@ -84,7 +84,7 @@ def all_changes():
         page = int(args['p'])
     if page < 0:
         page = 0
-    results = html_dao.get_all_changed_skip(page)
+    results = get_changed_results(page)
 
     return template_all_changed.render(results=results, p=page)
 
@@ -172,6 +172,15 @@ def get_all_results():
 def get_all_changed_results():
     results = []
     for i in html_dao.get_all_not_identical():
+        item = i
+        item['url'] = html_dao.get_url_by_url_type(i['urlType'])['url']
+        results.append(item)
+    return results
+
+
+def get_changed_results(pages_to_skip):
+    results = []
+    for i in html_dao.get_all_changed_skip(pages_to_skip):
         item = i
         item['url'] = html_dao.get_url_by_url_type(i['urlType'])['url']
         results.append(item)
