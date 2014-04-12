@@ -33,8 +33,8 @@ def do_job():
     log.info('Job ended')
 
 
-schedule.every(1).minutes.do(do_job)
-# schedule.every(1).hours.do(do_job)
+# schedule.every(1).minutes.do(do_job)
+schedule.every(1).hours.do(do_job)
 
 
 def get_page_as_string(url):
