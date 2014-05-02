@@ -47,7 +47,7 @@
         </tr>
         {% for result in change_results -%}
         <tr>
-            <td> {{ result['url'] }}</td>
+            <td><a href="{{ result['url'] }}" target="_blank"> {{ result['url'] }} </a></td>
             <td>{{ result['time'] }}</td>
             <td> {{ result['date'] }}</td>
             <td>{% if result['areIdentical'] == 1 %} identical {% else %}
