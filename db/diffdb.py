@@ -7,6 +7,7 @@ from bson.objectid import ObjectId
 from lxml import html
 
 from utils.logerconf import Logger
+from utils.configparser import Parser
 
 
 logger = Logger()
@@ -19,11 +20,19 @@ class HtmlDAO:
         self.results = database_diffs.results
         self.database_diffs = database_diffs
         self.urls = database_diffs.urls
+        self.config = Parser()
 
     def get_html_by_ids(self, old, new):
         return self.htmls.find_one({'_id': ObjectId(old)}), self.htmls.find_one({'_id': ObjectId(new)})
 
     def insert_html(self, html_string, url, url_type):
+        xpath = self.config.get_xpath()
+
+        if xpath != '':
+            div = self.get_div_content_by_xpath(html_string, xpath)
+        else:
+            div = self.get_div_content(html_string)
+
         if html_string == "could not open page":
             return
         dt = datetime.now()
@@ -34,7 +43,7 @@ class HtmlDAO:
                  'date': dt.strftime("%d.%m.%Y"),
                  'time': dt.strftime("%X"),
                  'url': url,
-                 'div': self.get_div_content(html_string)}
+                 'div': div}
         try:
             self.htmls.insert(query)
         except:
@@ -44,6 +53,12 @@ class HtmlDAO:
     def get_div_content(html_string):
         htm = html.document_fromstring(html_string)
         elem = htm.xpath('//div[@id="container"]')
+        return elem[0].text_content().strip()
+
+    @staticmethod
+    def get_div_content_by_xpath(html_string, xpath):
+        htm = html.document_fromstring(html_string)
+        elem = htm.xpath(xpath)
         return elem[0].text_content().strip()
 
     def get_all_not_identical(self):
