@@ -1,6 +1,6 @@
 $(function(){
     $("#dialog-confirm").css('display', 'none');
-    $('a').click(function(){
+    $('a.remove-link').click(function(){
         var urlId = $(this).attr('name');
         $( "#dialog-confirm" ).dialog({
             resizable: true,
@@ -17,9 +17,6 @@ $(function(){
                 }
             }
         });
-
-//        removeUrl(urlId);
-        console.log(urlId);
     });
 
     function removeUrl(urlId){
