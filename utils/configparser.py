@@ -16,6 +16,12 @@ class Parser:
         self.urls = self.config.get('URLS', 'urls')
         self.secret_word = self.config.get('OTHER', 'secret_word')
         self.content_xpath = self.config.get('CONTENT_XPATH', 'xpath')
+        self.sch_period = self.config.get('OTHER', 'sch_period')
+
+    def get_period(self):
+        if self.sch_period != '':
+            return int(self.sch_period)
+        else: return 0
 
     def get_login(self):
         return self.login

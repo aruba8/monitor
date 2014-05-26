@@ -27,11 +27,15 @@ class HtmlDAO:
 
     def insert_html(self, html_string, url, url_type):
         xpath = self.config.get_xpath()
+        try:
+            if xpath != '':
+                div = self.get_div_content_by_xpath(html_string, xpath)
+            else:
+                div = self.get_div_content(html_string)
+        except Exception as ex:
+            log.error(ex.message)
+            return
 
-        if xpath != '':
-            div = self.get_div_content_by_xpath(html_string, xpath)
-        else:
-            div = self.get_div_content(html_string)
 
         if html_string == "could not open page":
             return
@@ -52,14 +56,21 @@ class HtmlDAO:
     @staticmethod
     def get_div_content(html_string):
         htm = html.document_fromstring(html_string)
-        elem = htm.xpath('//div[@id="container"]')
-        return elem[0].text_content().strip()
+        xpath = '//div[@id="container"]'
+        elem = htm.xpath(xpath)
+        if len(elem) == 0:
+            raise Exception("Couldn't find anything using this xpath: "+xpath)
+        else:
+            return elem[0].text_content().strip()
 
     @staticmethod
     def get_div_content_by_xpath(html_string, xpath):
         htm = html.document_fromstring(html_string)
         elem = htm.xpath(xpath)
-        return elem[0].text_content().strip()
+        if len(elem) == 0:
+            raise Exception("Couldn't find anything using this xpath: "+xpath)
+        else:
+            return elem[0].text_content().strip()
 
     def get_all_not_identical(self):
         query = {'areIdentical': 0}

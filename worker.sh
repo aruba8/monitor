@@ -7,13 +7,10 @@ export PYTHONPATH=${CURRPATH}:${CURRPATH}/db:${CURRPATH}/workers:${CURRPATH}/uti
 WORKERS_DIR=workers
 PROGRAM="worker.py"
 CURDATE=$(date +"%Y_%m_%d_%H%M%S")
-LOGFILE=logs_worker/worker${CURDATE}.log
+LOGFILE=worker.log
 JA_PID=worker.pid
 PROG_BIN="python ${WORKERS_DIR}/${PROGRAM}"
 PID=`ps -aef | grep "$PROGRAM" | grep -v grep | awk '{print $2}'`
-
-#move logs modified more than 24h ago to logs/old folder
-find logs_worker/ -maxdepth 1 -type f -mtime +1 -name "*.log*" -exec mv {} logs_worker/old >/dev/null 2>&1 \;
 
 
 case "$1" in

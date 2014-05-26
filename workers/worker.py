@@ -32,9 +32,8 @@ def do_job():
         comparator.check(_id)
     log.info('Job ended')
 
-
-# schedule.every(1).minutes.do(do_job)
-schedule.every(1).hours.do(do_job)
+period = config_parser.get_period()
+schedule.every(period).minutes.do(do_job)
 
 
 def get_page_as_string(url):
