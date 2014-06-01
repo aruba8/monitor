@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<a href="/">home page</a><br>
+<a href="/admin">admin</a><br>
+
+<form action="/admin/hosts" method="post">
+    <label>Host</label><input type="text" name="host"/><br>
+    <label>Xpath</label><input type="text" name="xpath"/><br>
+    <input type="submit" value="submit"/>
+</form>
+
+<table>
+    <tbody>
+    <tr>
+        <th>Host</th>
+        <th>Xpath</th>
+        <th>Action</th>
+    </tr>
+    {% for xpath in xpaths -%}
+    <tr>
+        <td>{{xpath['host']}}</td>
+        <td>{{xpath['xpath']}}</td>
+    </tr>
+    {%- endfor %}
+    </tbody>
+</table>
+</body>
+</html>

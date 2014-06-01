@@ -22,6 +22,7 @@ template_admin_page = env.get_template('admin.html')
 template_login = env.get_template('login.html')
 template_signup = env.get_template('signup.html')
 template_all_changed = env.get_template('cp.html')
+template_admin_hosts_page = env.get_template('hosts.html')
 
 from pymongo import MongoClient
 from workers.comparing import Comparator
@@ -102,7 +103,6 @@ def admin_page():
 
     if request.method == 'GET':
         urls = admin_worker.get_all_active_urls()
-
         return template_admin_page.render(urls=urls)
     elif request.method == 'POST':
         url_id = request.form.get('url_to_delete')
@@ -113,6 +113,28 @@ def admin_page():
             return redirect('/admin')
         admin_worker.add_url(url)
         return redirect('/admin')
+
+@app.route('/admin/hosts', methods=['GET', 'POST'])
+def admin_hosts():
+    if 'username' not in session:
+        return redirect('/login')
+    admin_worker = Admin(db)
+    username_cookies = session['username']
+    sessions_worker = Sessions(db)
+    username = sessions_worker.login_check(username_cookies)
+
+    if username is None:
+        return redirect('/login?r')
+
+    if request.method == 'GET':
+        xpaths = admin_worker.get_xpaths();
+        return template_admin_hosts_page.render(xpaths=xpaths)
+    elif request.method == 'POST':
+        host = request.form['host']
+        xpath = request.form['xpath']
+        admin_worker.add_xpath(host, xpath)
+        return redirect('/admin/hosts')
+        pass
 
 
 @app.route('/login', methods=['GET', 'POST'])

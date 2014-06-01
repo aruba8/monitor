@@ -14,6 +14,7 @@ log = logger.get_logger()
 class Admin:
     def __init__(self, diffs_db):
         self.urls = diffs_db.urls
+        self.xpath = diffs_db.xpath
 
     def add_url(self, url):
         from utils.urlutil import prepare_url
@@ -46,3 +47,25 @@ class Admin:
         for url in urls:
             urls_list.append(url['_id'])
         return urls_list
+
+    def add_xpath(self, host, xpath):
+        query = {'host': host,
+                 'xpath': xpath,
+                 'added_datetime': datetime.now(),
+                 'active': 1}
+        try:
+            self.xpath.insert(query)
+        except:
+            log.error('Error inserting xpath' + sys.exc_info()[0])
+
+    def get_xpaths(self):
+        query = {
+            'active': 1}
+        return self.xpath.find(query)
+
+
+
+
+
+
+
