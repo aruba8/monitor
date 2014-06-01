@@ -15,22 +15,28 @@
 
 
 <div class="add-url">
-    <form action="/admin" method="post">
-        <label>URL to add: </label><input id="url" type="text" name="url">
-        <input type="submit">
-    </form>
-</div>
+<form action="/admin" method="post">    <label> Hosts </label>
+    <select name="host_id">
+        {% for host in hosts -%}
+        <option value="{{host['_id']}}">{{ host['host'] }}</option>
+        {%- endfor %}
+    </select><br>
+    <label>URL</label><input type="text" id="url" name="url"/><br>
+    <input type="submit" value="Add">
+</form></div>
 
 <table>
     <tbody>
 
     <tr>
+        <th>Host</th>
         <th>URL</th>
         <th>Added Time</th>
         <th>Action</th>
     </tr>
     {% for url in urls -%}
     <tr>
+        <td>{{ url['host'] }}</td>
         <td>{{ url['url'] }}</td>
         <td>{{ url['datetime'] }}</td>
         <td><a class="remove-link" href="#" name="{{ url['_id'] }}">remove</a></td>

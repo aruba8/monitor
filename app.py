@@ -103,16 +103,21 @@ def admin_page():
 
     if request.method == 'GET':
         urls = admin_worker.get_all_active_urls()
-        return template_admin_page.render(urls=urls)
+        hosts = admin_worker.get_active_hosts()
+        return template_admin_page.render(urls=urls, hosts=hosts)
     elif request.method == 'POST':
         url_id = request.form.get('url_to_delete')
         if url_id is not None:
             admin_worker.remove_url(url_id)
+            return redirect('/admin')
         url = request.form['url']
+        host = request.form['host_id']
         if url is None or url == '':
             return redirect('/admin')
-        admin_worker.add_url(url)
+        print(request.form)
+        admin_worker.add_url(url, host)
         return redirect('/admin')
+
 
 @app.route('/admin/hosts', methods=['GET', 'POST'])
 def admin_hosts():
@@ -127,14 +132,13 @@ def admin_hosts():
         return redirect('/login?r')
 
     if request.method == 'GET':
-        xpaths = admin_worker.get_xpaths();
+        xpaths = admin_worker.get_xpaths()
         return template_admin_hosts_page.render(xpaths=xpaths)
     elif request.method == 'POST':
         host = request.form['host']
         xpath = request.form['xpath']
         admin_worker.add_xpath(host, xpath)
         return redirect('/admin/hosts')
-        pass
 
 
 @app.route('/login', methods=['GET', 'POST'])
