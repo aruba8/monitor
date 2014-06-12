@@ -15,7 +15,6 @@ class Parser:
         self.to = self.config.get('EmailConfigs', 'to').split(',')
         self.urls = self.config.get('URLS', 'urls')
         self.secret_word = self.config.get('OTHER', 'secret_word')
-        self.content_xpath = self.config.get('CONTENT_XPATH', 'xpath')
         self.sch_period = self.config.get('OTHER', 'sch_period')
 
     def get_period(self):
@@ -37,6 +36,3 @@ class Parser:
 
     def get_secret_word(self):
         return self.secret_word
-
-    def get_xpath(self):
-        return self.content_xpath
