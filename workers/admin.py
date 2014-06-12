@@ -1,12 +1,12 @@
-from bson.objectid import ObjectId
-
 __author__ = 'erik'
 
 import sys
-
 from datetime import datetime
+
 from bson.objectid import ObjectId
+
 from utils.logerconf import Logger
+
 
 logger = Logger()
 log = logger.get_logger()
@@ -19,6 +19,7 @@ class Admin:
 
     def add_url(self, url, host_id):
         from utils.urlutil import prepare_url
+
         host = self.get_host_by_id(host_id)[0]
         purl = prepare_url(url)
         query = {'url': purl['url'],

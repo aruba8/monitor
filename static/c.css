@@ -6,7 +6,28 @@ body {
 
 }
 
+#delete-form {
+    z-index: 100;
+    border: 1px solid #000000;
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 300px;
+    height: 85px;
+    padding: 5px;
+    padding-top: 15px;
+    position: absolute;
+    background: #fff;
+}
+
+#delete-form input{
+    margin-top: 20px;
+}
+
+
 #edit-form {
+    z-index: 100;
     border: 1px solid #000000;
     display: none;
     margin-top: 20px;
@@ -18,7 +39,14 @@ body {
     background: #fff;
 }
 
+#edit-form #cancel-edit {
+ margin-left: 10px;
+ font-weight: bold;
+}
 
+#edit-form #edit-submit{
+    width: 100px;
+}
 #edit-form input {
     width: 240px;
 }
@@ -29,7 +57,6 @@ body {
     margin-right: 15px;
     width: 100px;
 }
-
 
 #hosts-table {
     border: 1px solid #000000;
@@ -114,4 +141,20 @@ del {
 
 #url {
     width: 500px;
+}
+
+#hider {
+    position:absolute;
+    top: 0%;
+    left: 0%;
+    width: 4600px;
+    height: 4000px;
+    margin-top: -800px; /*set to a negative number 1/2 of your height*/
+    margin-left: -500px; /*set to a negative number 1/2 of your width*/
+        /*
+        z- index must be lower than pop up box
+       */
+    z-index: 99;
+    background-color: Black;
+    opacity: 0.4;
 }

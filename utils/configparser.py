@@ -20,7 +20,8 @@ class Parser:
     def get_period(self):
         if self.sch_period != '':
             return int(self.sch_period)
-        else: return 0
+        else:
+            return 0
 
     def get_login(self):
         return self.login

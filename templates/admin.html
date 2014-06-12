@@ -15,17 +15,17 @@
 
 
 <div class="add-url">
-{% if hosts.count > 0 %}
-<form action="/admin" method="post">    <label> Hosts </label>
-    <select name="host_id">
-        {% for host in hosts.hosts -%}
-        <option value="{{host['_id']}}">{{ host['host'] }}</option>
-        {%- endfor %}
-    </select><br>
-    <label>URL</label><input type="text" id="url" name="url"/><br>
-    <input type="submit" value="Add">
-</form>
-{% endif %}
+    {% if hosts.count > 0 %}
+    <form action="/admin" method="post"><label> Hosts </label>
+        <select name="host_id">
+            {% for host in hosts.hosts -%}
+            <option value="{{host['_id']}}">{{ host['host'] }}</option>
+            {%- endfor %}
+        </select><br>
+        <label>URL</label><input type="text" id="url" name="url"/><br>
+        <input type="submit" value="Add">
+    </form>
+    {% endif %}
 </div>
 
 <table>
@@ -47,12 +47,13 @@
     {%- endfor %}
     </tbody>
 </table>
-
-
-<div id="dialog-confirm" title="Are you shure you want to remove this URL?">
-    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>These items will be
-        permanently deleted and cannot be recovered. Are you sure?</p>
+<div id="delete-form">
+    <span>Delete this url?</span>
+    <button id="delete-submit">Ok</button>
+    <button id="delete-cancel">Cancel</button>
 </div>
+<div id="hider"></div>
+
 <script src="static/j.js"></script>
 </body>
 </html>

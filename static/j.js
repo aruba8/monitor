@@ -1,23 +1,28 @@
 $(function(){
-    $("#dialog-confirm").css('display', 'none');
-    $('a.remove-link').click(function(){
-        var urlId = $(this).attr('name');
-        $( "#dialog-confirm" ).dialog({
-            resizable: true,
-            height: 205,
-            width: 560,
-            modal: true,
-            buttons: {
-                "Delete URL": function() {
-                    removeUrl(urlId);
-                    $( this ).dialog( "close" );
-                },
-                "Cancel": function() {
-                    $( this ).dialog( "close" );
-                }
-            }
+    var hider = $('#hider');
+    hider.hide();
+
+    $('.remove-link').click(function(){
+        var removeForm = $("#delete-form");
+        var offset = $(this).offset();
+        var urlId = $(this).attr("name");
+        var okButton = $("#delete-submit");
+        var cancelButton = $("#delete-cancel");
+        removeForm.css("top", offset.top - 85);
+        removeForm.css("left", offset.left - 300);
+        okButton.click(function(){
+            removeUrl(urlId);
+            hider.fadeOut('slow');
+        });   
+        cancelButton.click(function(){
+            removeForm.hide();
+            hider.fadeOut('slow');
         });
+        hider.fadeIn("slow");
+        removeForm.show();
     });
+
+ 
 
     function removeUrl(urlId){
         $.ajax({
