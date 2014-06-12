@@ -14,6 +14,8 @@ logger = Logger()
 log = logger.get_logger()
 
 
+
+
 class HtmlDAO:
     def __init__(self, database_diffs):
         self.htmls = database_diffs.htmls
@@ -21,12 +23,14 @@ class HtmlDAO:
         self.database_diffs = database_diffs
         self.urls = database_diffs.urls
         self.config = Parser()
+        self.xpath = database_diffs.xpath
 
     def get_html_by_ids(self, old, new):
         return self.htmls.find_one({'_id': ObjectId(old)}), self.htmls.find_one({'_id': ObjectId(new)})
 
-    def insert_html(self, html_string, url, url_type):
-        xpath = self.config.get_xpath()
+    def insert_html(self, html_string, url, url_id):
+        xpath = self.get_xpath_by_url_id(url_id)
+        # xpath = self.config.get_xpath()
         try:
             if xpath != '':
                 div = self.get_div_content_by_xpath(html_string, xpath)
@@ -42,7 +46,7 @@ class HtmlDAO:
         dt = datetime.now()
         query = {'html': html_string,
                  'datetime': dt,
-                 'urlType': url_type,
+                 'urlType': url_id,
                  'checked': 0,
                  'date': dt.strftime("%d.%m.%Y"),
                  'time': dt.strftime("%X"),
@@ -139,3 +143,10 @@ class HtmlDAO:
     def get_all_changed_skip(self, number_to_skip):
         query = {'areIdentical': 0}
         return self.results.find(query).sort('datetime', -1).limit(10).skip(number_to_skip)
+
+    def get_xpath_by_url_id(self, url_id):
+        find_query = {'_id': ObjectId(url_id)};
+        projection = {'host_id': True}
+        host_id = self.urls.find_one(find_query, projection)
+        return self.xpath.find_one({'_id': host_id['host_id']})['xpath']
+

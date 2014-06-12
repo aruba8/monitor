@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, request, redirect, session
+from flask import Flask, request, redirect, session, jsonify
 from jinja2 import Environment, PackageLoader
 from bson.objectid import ObjectId
 
@@ -104,6 +104,7 @@ def admin_page():
     if request.method == 'GET':
         urls = admin_worker.get_all_active_urls()
         hosts = admin_worker.get_active_hosts()
+        hosts = {"count": hosts.count(), "hosts": hosts}
         return template_admin_page.render(urls=urls, hosts=hosts)
     elif request.method == 'POST':
         url_id = request.form.get('url_to_delete')
@@ -114,7 +115,6 @@ def admin_page():
         host = request.form['host_id']
         if url is None or url == '':
             return redirect('/admin')
-        print(request.form)
         admin_worker.add_url(url, host)
         return redirect('/admin')
 
@@ -135,10 +135,33 @@ def admin_hosts():
         xpaths = admin_worker.get_xpaths()
         return template_admin_hosts_page.render(xpaths=xpaths)
     elif request.method == 'POST':
-        host = request.form['host']
-        xpath = request.form['xpath']
-        admin_worker.add_xpath(host, xpath)
-        return redirect('/admin/hosts')
+        host = request.form.get('host')
+        xpath = request.form.get('xpath')
+        host_id_to_delete = request.form.get('host_to_delete')
+        host_id = request.form.get('getHostId')
+        edit = request.form.get("edit")
+        if edit is not None:
+            host_id_to_edit = request.form.get("edit")
+            host_to_edit = request.form.get("host-to-edit")
+            xpath_to_edit = request.form.get("xpath-to-edit")
+            admin_worker.edit_host(host_id_to_edit, host_to_edit, xpath_to_edit)
+
+
+        if host_id is not None:
+            host_to_edit = admin_worker.get_host_by_id(host_id)
+
+            if host_to_edit.count() == 1:
+                return jsonify(xpath=host_to_edit[0]['xpath'], host=host_to_edit[0]['host'])
+
+        if host_id_to_delete is not None:
+            admin_worker.remove_host(host_id_to_delete)
+            return redirect('/admin/hosts')
+
+        if host == '' or host is None or xpath == '' or xpath is None:
+            return redirect('/admin/hosts')
+        else:
+            admin_worker.add_xpath(host, xpath)
+            return redirect('/admin/hosts')
 
 
 @app.route('/login', methods=['GET', 'POST'])

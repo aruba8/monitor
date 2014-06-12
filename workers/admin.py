@@ -23,7 +23,7 @@ class Admin:
         print host
         purl = prepare_url(url)
         query = {'url': purl['url'],
-                 'host_id': host_id,
+                 'host_id': ObjectId(host_id),
                  'host': host['host'],
                  'path': purl['path'],
                  'datetime': datetime.now(),
@@ -33,15 +33,18 @@ class Admin:
         except:
             log.error('Error inserting url' + sys.exc_info()[0])
 
+    def remove_host(self, host_id_to_delete):
+        query = {'_id': ObjectId(host_id_to_delete)}
+        upd_query = {'$set': {'active': 0}}
+        self.xpath.update(query, upd_query)
+        url_query = {'host_id': ObjectId(host_id_to_delete)}
+        self.urls.update(url_query, upd_query)
+
     def get_host_by_id(self, host_id):
         query = {
             '_id': ObjectId(host_id)
         }
-
-        print query
-
         return self.xpath.find(query)
-
 
     def get_all_active_urls(self):
         query = {'active': 1}
@@ -82,14 +85,14 @@ class Admin:
         projection = {
             '_id': True,
             'host': True
-
         }
         return self.xpath.find(query, projection)
 
-
-
-
-
-
-
-
+    def edit_host(self, host_id, host, xpath):
+        query = {
+            '_id': ObjectId(host_id)
+        }
+        upd_query = {
+            '$set': {'host': host, 'xpath': xpath}
+        }
+        self.xpath.update(query, upd_query)

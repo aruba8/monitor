@@ -3,18 +3,28 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+    <link rel="stylesheet" href="../../static/c.css"/>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
 </head>
 <body>
+
 <a href="/">home page</a><br>
 <a href="/admin">admin</a><br>
 
-<form action="/admin/hosts" method="post">
-    <label>Host</label><input type="text" name="host"/><br>
-    <label>Xpath</label><input type="text" name="xpath"/><br>
-    <input type="submit" value="submit"/>
-</form>
+<div class="add-host-form">
+    <form action="/admin/hosts" method="post">
 
-<table>
+    <fieldset>
+        <label for="host">Host</label><input type="text" name="host" id="host"/><br>
+        <label for="xpath">Xpath</label><input type="text" name="xpath" id="xpath"/><br>
+        <label for="submit">.</label> <input type="submit" value="submit" id="submit"/>
+    </fieldset>
+    </form>
+</div>
+<table id="hosts-table">
     <tbody>
     <tr>
         <th>Host</th>
@@ -24,10 +34,26 @@
     {% for xpath in xpaths -%}
     <tr>
         <td>{{xpath['host']}}</td>
-        <td>{{xpath['xpath']}}</td>
+        <td class="xpath-cell">{{xpath['xpath']}}</td>
+        <td><a href="#" class="remove" name="{{ xpath['_id']}}">remove</a> <br> <a class="edit" href="#" name="{{xpath['_id']}}">edit</a> </td>
     </tr>
     {%- endfor %}
     </tbody>
 </table>
+<div id="dialog-confirm" title="Are you shure you want to remove this host?">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>These items will be
+        permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+<div id="edit-form">
+<span>Edit host?</span>
+    <form action="/admin/hosts" method="POST">
+        <input id="edit-input" name="edit" type="hidden" value="">
+        <label for="edit-host-field">Host</label><input type="text" id="edit-host-field" name="host-to-edit">
+        <label for="edit-xpath-field">Xpath</label><input type="text" id="edit-xpath-field" name="xpath-to-edit">
+        <label for="edit-submit">Submit</label><input type="submit" id="edit-submit">
+    </form>
+</div>
+
+<script type="text/javascript" src="../../static/jh.js"></script>
 </body>
 </html>

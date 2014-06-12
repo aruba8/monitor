@@ -15,15 +15,18 @@
 
 
 <div class="add-url">
+{% if hosts.count > 0 %}
 <form action="/admin" method="post">    <label> Hosts </label>
     <select name="host_id">
-        {% for host in hosts -%}
+        {% for host in hosts.hosts -%}
         <option value="{{host['_id']}}">{{ host['host'] }}</option>
         {%- endfor %}
     </select><br>
     <label>URL</label><input type="text" id="url" name="url"/><br>
     <input type="submit" value="Add">
-</form></div>
+</form>
+{% endif %}
+</div>
 
 <table>
     <tbody>
@@ -50,9 +53,6 @@
     <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>These items will be
         permanently deleted and cannot be recovered. Are you sure?</p>
 </div>
-<script src="static/j.js">
-</script>
-
-
+<script src="static/j.js"></script>
 </body>
 </html>
