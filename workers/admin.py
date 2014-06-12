@@ -20,7 +20,6 @@ class Admin:
     def add_url(self, url, host_id):
         from utils.urlutil import prepare_url
         host = self.get_host_by_id(host_id)[0]
-        print host
         purl = prepare_url(url)
         query = {'url': purl['url'],
                  'host_id': ObjectId(host_id),
