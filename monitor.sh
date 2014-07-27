@@ -3,7 +3,7 @@
 CURRPATH=$(pwd)
 export PYTHONPATH=${CURRPATH}:${CURRPATH}/db:${CURRPATH}/workers:${CURRPATH}/utils
 
-PROGRAM="app.py"
+PROGRAM="run.py"
 CURDATE=$(date +"%Y_%m_%d_%H%M%S")
 LOGFILE=monitor.log
 JA_PID=monitor.pid
