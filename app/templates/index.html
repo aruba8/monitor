@@ -6,6 +6,17 @@
 </head>
 <body>
 
+{% if is_authenticated %}
+<ul>
+    <li><a href="{{ url_for('admin_page') }}">admin</a></li>
+    <li><a href="{{ url_for('logout') }}">logout</a></li>
+</ul>
+{% else %}
+<ul>
+    <li><a href="{{ url_for('login') }}">login</a></li>
+</ul>
+{% endif %}
+
 <div id="table1" class="tt">
     <table id="t1">
         <tbody>

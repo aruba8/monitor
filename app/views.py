@@ -28,15 +28,16 @@ def before_request():
     g.user = current_user
     if g.user.is_authenticated():
         g.user.last_seen = datetime.utcnow()
-        sessions.start_session(g.user)
 
 
 @app.route('/')
+@app.route('/index')
 def index():
-    print(g.user.is_authenticated())
+    is_authenticated = g.user.is_authenticated()
     results = get_all_results()
     change_results = get_all_changed_results()
-    return render_template('index.html', results=results, change_results=change_results)
+    return render_template('index.html', results=results, change_results=change_results,
+                           is_authenticated=is_authenticated)
 
 
 @app.route('/diff', methods=['GET'])
@@ -159,7 +160,7 @@ def login():
             sessions.start_session(user)
             login_user(user)
             flash("Logged in successfully.")
-            return redirect(request.args.get('next') or url_for('/admin'))
+            return redirect(request.args.get('next') or url_for('index'))
 
     return render_template('login.html', form=form)
 
