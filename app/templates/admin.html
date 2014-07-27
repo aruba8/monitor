@@ -1,18 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-    <link rel="stylesheet" href="static/c.css"/>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<!-- extend base layout -->
+{% extends "admin_base.html" %}
 
-</head>
-<body>
-<h2>ADMIN PAGE</h2>
-<a href="/">home page</a><br>
-<a href="/admin/hosts">hosts</a><br>
-
+{% block content %}
 
 <div class="add-url">
     {% if hosts.count > 0 %}
@@ -55,5 +44,4 @@
 <div id="hider"></div>
 
 <script src="static/j.js"></script>
-</body>
-</html>
+{% endblock %}

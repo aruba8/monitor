@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<div id="login_form">
+    <form action="" method="post" name="login">
+        <p>
+            {{form.hidden_tag()}}
+            {{form.login(size=30)}}
+            {% for error in form.errors.login %}
+            <span style="color: red;">[{{error}}]</span>
+            {% endfor %}
+            <br>
+            {{form.password(size=30)}}
+            {% for error in form.errors.login %}
+            <span style="color: red;">[{{error}}]</span>
+            {% endfor %}
+            <br>
+
+        </p>
+
+        <p><input type="submit" value="Sign In"></p>
+
+    </form>
+</div>
+</body>
+</html>

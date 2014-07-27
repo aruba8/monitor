@@ -1,7 +1,6 @@
 #!/bin/bash
 #
 
-mkdir -p logs_worker/old
 CURRPATH=$(pwd)
 export PYTHONPATH=${CURRPATH}:${CURRPATH}/db:${CURRPATH}/workers:${CURRPATH}/utils
 WORKERS_DIR=workers

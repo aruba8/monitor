@@ -28,7 +28,7 @@ $(function(){
     function removeHost(hostId){
         $.ajax({
             dataType: "json",
-            url: '/admin/hosts',
+            url: '/hosts',
             data: {
                 "host_to_delete": hostId
             },
@@ -51,7 +51,7 @@ $(function(){
         editForm.css("top", offset.top - 88);
         editForm.css("left", offset.left - 450);
 
-        $.post("/admin/hosts", {getHostId: hostId}, function(res){
+        $.post("/hosts", {getHostId: hostId}, function(res){
             var host = res.host;
             var xpath = res.xpath;
             hostInput.val(host);

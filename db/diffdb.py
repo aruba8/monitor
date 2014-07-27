@@ -7,13 +7,9 @@ from bson.objectid import ObjectId
 from lxml import html
 
 from utils.logerconf import Logger
-from utils.configparser import Parser
-
 
 logger = Logger()
 log = logger.get_logger()
-
-
 
 
 class HtmlDAO:
@@ -22,7 +18,6 @@ class HtmlDAO:
         self.results = database_diffs.results
         self.database_diffs = database_diffs
         self.urls = database_diffs.urls
-        self.config = Parser()
         self.xpath = database_diffs.xpath
 
     def get_html_by_ids(self, old, new):
@@ -30,7 +25,6 @@ class HtmlDAO:
 
     def insert_html(self, html_string, url, url_id):
         xpath = self.get_xpath_by_url_id(url_id)
-        # xpath = self.config.get_xpath()
         try:
             if xpath != '':
                 div = self.get_div_content_by_xpath(html_string, xpath)
@@ -39,7 +33,6 @@ class HtmlDAO:
         except Exception as ex:
             log.error(ex.message)
             return
-
 
         if html_string == "could not open page":
             return
@@ -63,7 +56,7 @@ class HtmlDAO:
         xpath = '//div[@id="container"]'
         elem = htm.xpath(xpath)
         if len(elem) == 0:
-            raise Exception("Couldn't find anything using this xpath: "+xpath)
+            raise Exception("Couldn't find anything using this xpath: " + xpath)
         else:
             return elem[0].text_content().strip()
 
@@ -72,7 +65,7 @@ class HtmlDAO:
         htm = html.document_fromstring(html_string)
         elem = htm.xpath(xpath)
         if len(elem) == 0:
-            raise Exception("Couldn't find anything using this xpath: "+xpath)
+            raise Exception("Couldn't find anything using this xpath: " + xpath)
         else:
             return elem[0].text_content().strip()
 
@@ -145,7 +138,7 @@ class HtmlDAO:
         return self.results.find(query).sort('datetime', -1).limit(10).skip(number_to_skip)
 
     def get_xpath_by_url_id(self, url_id):
-        find_query = {'_id': ObjectId(url_id)};
+        find_query = {'_id': ObjectId(url_id)}
         projection = {'host_id': True}
         host_id = self.urls.find_one(find_query, projection)
         return self.xpath.find_one({'_id': host_id['host_id']})['xpath']

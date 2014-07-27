@@ -12,6 +12,7 @@ from utils.logerconf import Logger
 
 logger = Logger()
 log = logger.get_logger()
+from app.models import User
 
 
 class Sessions:
@@ -33,8 +34,8 @@ class Sessions:
         log.info("returning a session or none")
         return session
 
-    def start_session(self, username):
-        session = {'username': username}
+    def start_session(self, user):
+        session = {'username': user.id}
 
         try:
             self.sessions.insert(session, safe=True)
@@ -158,3 +159,10 @@ class Sessions:
         if secret_word != config.get_secret_word():
             return False
         return True
+
+    def get_user(self, id):
+        user = self.users.find_one({'_id': id})
+        if user is None:
+            return None
+        else:
+            return User(id, user['password'])

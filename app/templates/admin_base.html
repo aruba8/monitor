@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="static/c.css"/>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+</head>
+<body>
+<h2>ADMIN PAGE</h2>
+<a href="{{ url_for('index') }}">home page</a><br>
+<a href="{{ url_for('admin_page') }}">admin</a><br>
+<a href="{{ url_for('admin_hosts') }}">hosts</a><br>
+<a href="{{ url_for('logout') }}">logout</a><br>
+
+{% block content %}{% endblock %}
+</body>
+</html>
