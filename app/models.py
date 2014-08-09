@@ -5,7 +5,7 @@ ROLE_ADMIN = 1
 
 
 class User(dbm.Document):
-    login = dbm.StringField(max_length=80, min_length=3, unique=True)
+    username = dbm.StringField(max_length=80, min_length=3, unique=True)
     password = dbm.StringField()
     active = dbm.BooleanField()
 
@@ -18,14 +18,17 @@ class User(dbm.Document):
     def is_anonymous(self):
         return False
 
+    def get_username(self):
+        return str(self.username)
+
     def get_id(self):
-        return str(self.login)
+        return str(self.username)
 
     def get_password(self):
         return str(self.password)
 
     def __unicode__(self):
-        return self.login
+        return self.username
 
 
 class Html(dbm.Document):

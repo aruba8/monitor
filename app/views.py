@@ -32,7 +32,6 @@ def before_request():
 @app.route('/index')
 def index():
     is_authenticated = g.user.is_authenticated()
-    username = g.user.get_id()
     results = get_all_results()
     change_results = get_all_changed_results()
     return render_template('index.html', results=results, change_results=change_results,
@@ -145,7 +144,7 @@ def admin_hosts():
 
 @lm.user_loader
 def user_loader(login):
-    return User.objects(login=login).first()
+    return User.objects(username=login).first()
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -154,7 +153,7 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.objects(login=form.login.data).first()
+        user = User.objects(username=form.login.data).first()
         if sessions.validate_login(form.login.data, form.password.data, {}):
             sessions.start_session(form.login.data)
             login_user(user)
@@ -178,7 +177,7 @@ def signup_page():
     if request.method == 'POST' and form.validate() and sessions.validate_new_user(form.login.data, form.password.data,
                                                                                    form.confirm.data, form.secret.data):
         if sessions.new_user(form.login.data, form.password.data):
-            user = User.objects(login=form.login.data).first()
+            user = User.objects(username=form.login.data).first()
             login_user(user)
             return redirect(url_for('index'))
         else:

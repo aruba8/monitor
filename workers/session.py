@@ -57,7 +57,7 @@ class Sessions:
             # validates the login, returns True if it's a valid user login. false otherwise
 
     def validate_login(self, username, password, user_record):
-        user = User.objects(login=username).first()
+        user = User.objects(username=username).first()
         if user is None:
             log.warn("User not in database")
             return False
@@ -130,14 +130,10 @@ class Sessions:
         password_hash = self.make_pw_hash(password)
 
         try:
-            User(login=username, password=password_hash, active=True).save()
-        except errors.DuplicateKeyError:
+            User(username=username, password=password_hash, active=True).save()
+        except:
             log.error("oops, username: " + username + " is already taken")
             return False
-        except errors.OperationFailure:
-            log.error("oops, mongo error")
-            return False
-
         return True
 
     def validate_new_user(self, username, password, confirm, secret_word):
@@ -151,10 +147,3 @@ class Sessions:
         if secret_word != config.get_secret_word():
             return False
         return True
-
-    def get_user(self, id):
-        user = self.users.find_one({'_id': id})
-        if user is None:
-            return None
-        else:
-            return User(id, user['password'])
