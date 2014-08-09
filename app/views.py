@@ -1,6 +1,6 @@
 from flask import request, redirect, jsonify, render_template, g, url_for, flash
 from bson.objectid import ObjectId
-from app import app, db, lm
+from app import app, lm
 from forms import LoginForm, SignUpForm
 from flask_login import login_user, logout_user, current_user, login_required
 from datetime import datetime

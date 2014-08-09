@@ -10,13 +10,10 @@ app.config.from_object('config')
 dbm = MongoEngine(app)
 from app.models import User
 
-
 lm = LoginManager()
 lm.init_app(app)
 lm.login_view = 'login'
 
-client = MongoClient('mongodb://localhost')
-db = client.diffs
 from app import views
 
 
