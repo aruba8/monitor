@@ -1,5 +1,3 @@
-from pymongo import errors
-
 __author__ = 'erik'
 
 import hmac

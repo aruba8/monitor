@@ -16,7 +16,7 @@ from workers.session import Sessions
 from db.diffdb import HtmlDAO
 from workers.admin import Admin
 
-html_dao = HtmlDAO(db)
+html_dao = HtmlDAO()
 sessions = Sessions(db)
 from models import User
 
@@ -87,7 +87,7 @@ def all_changes():
 @app.route('/admin', methods=['GET', 'POST'])
 @login_required
 def admin_page():
-    admin_worker = Admin(db)
+    admin_worker = Admin()
     if request.method == 'GET':
         urls = admin_worker.get_all_active_urls()
         hosts = admin_worker.get_active_hosts()
@@ -109,7 +109,7 @@ def admin_page():
 @app.route('/hosts', methods=['GET', 'POST'])
 @login_required
 def admin_hosts():
-    admin_worker = Admin(db)
+    admin_worker = Admin()
     if request.method == 'GET':
         xpaths = admin_worker.get_xpaths()
         return render_template('admin/hosts.html', xpaths=xpaths)
@@ -189,18 +189,18 @@ def signup_page():
 
 def get_all_results():
     results = []
-    for i in html_dao.get_all_active_results():
-        item = i
-        item['url'] = html_dao.get_url_by_url_type(i['urlType'])['url']
+    for item in html_dao.get_all_active_results():
+        url = html_dao.get_url_by_url_type(item['urlType'])['url']
+        item.set_url(url)
         results.append(item)
     return results
 
 
 def get_all_changed_results():
     results = []
-    for i in html_dao.get_all_not_identical():
-        item = i
-        item['url'] = html_dao.get_url_by_url_type(i['urlType'])['url']
+    for item in html_dao.get_all_not_identical():
+        url = html_dao.get_url_by_url_type(item['urlType'])['url']
+        item.set_url(url)
         results.append(item)
     return results
 

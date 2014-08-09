@@ -10,89 +10,54 @@ from utils.logerconf import Logger
 
 logger = Logger()
 log = logger.get_logger()
+from workers.models import Urls, Xpath
 
 
 class Admin:
-    def __init__(self, diffs_db):
-        self.urls = diffs_db.urls
-        self.xpath = diffs_db.xpath
 
     def add_url(self, url, host_id):
         from utils.urlutil import prepare_url
 
         host = self.get_host_by_id(host_id)[0]
         purl = prepare_url(url)
-        query = {'url': purl['url'],
-                 'host_id': ObjectId(host_id),
-                 'host': host['host'],
-                 'path': purl['path'],
-                 'datetime': datetime.now(),
-                 'active': 1}
         try:
-            self.urls.insert(query)
+            Urls(url=purl['url'], host_id=ObjectId(host_id), host=host['host'], path=purl['path'],
+                 datetime=datetime.now(), active=1).save()
         except:
             log.error('Error inserting url' + sys.exc_info()[0])
 
     def remove_host(self, host_id_to_delete):
-        query = {'_id': ObjectId(host_id_to_delete)}
-        upd_query = {'$set': {'active': 0}}
-        self.xpath.update(query, upd_query)
-        url_query = {'host_id': ObjectId(host_id_to_delete)}
-        self.urls.update(url_query, upd_query)
+
+        Xpath.objects(id=ObjectId(host_id_to_delete)).update_one(set__active=0)
+        Urls.objects(host_id=ObjectId(host_id_to_delete)).update_one(set__active=0)
 
     def get_host_by_id(self, host_id):
-        query = {
-            '_id': ObjectId(host_id)
-        }
-        return self.xpath.find(query)
+        return Xpath.objects(id=ObjectId(host_id))
 
     def get_all_active_urls(self):
-        query = {'active': 1}
-        return self.urls.find(query)
+        return Urls.objects(active=1)
 
     def remove_url(self, url_id):
-        query = {'_id': ObjectId(url_id)}
-        upd_query = {'$set': {'active': 0}}
-        self.urls.update(query, upd_query)
+        Urls.objects(id=ObjectId(url_id)).update_one(set__active=0)
 
     def get_all_active_url_ids(self):
-        query = {'active': 1}
-        show_query = {'_id': True}
-        urls = self.urls.find(query, show_query)
+        urls = self.get_all_active_urls()
         urls_list = []
         for url in urls:
-            urls_list.append(url['_id'])
+            urls_list.append(url['id'])
         return urls_list
 
     def add_xpath(self, host, xpath):
-        query = {'host': host,
-                 'xpath': xpath,
-                 'added_datetime': datetime.now(),
-                 'active': 1}
         try:
-            self.xpath.insert(query)
+            Xpath(host=host, xpath=xpath, added_datetime=datetime.now(), active=1).save()
         except:
             log.error('Error inserting xpath' + sys.exc_info()[0])
 
     def get_xpaths(self):
-        query = {
-            'active': 1}
-        return self.xpath.find(query)
+        return Xpath.objects(active=1)
 
     def get_active_hosts(self):
-        query = {
-            'active': 1}
-        projection = {
-            '_id': True,
-            'host': True
-        }
-        return self.xpath.find(query, projection)
+        return Xpath.objects(active=1)
 
     def edit_host(self, host_id, host, xpath):
-        query = {
-            '_id': ObjectId(host_id)
-        }
-        upd_query = {
-            '$set': {'host': host, 'xpath': xpath}
-        }
-        self.xpath.update(query, upd_query)
+        Xpath.objects(id=ObjectId(host_id)).update_one(set__host=host, set__xpath=xpath)

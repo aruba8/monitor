@@ -29,15 +29,3 @@ class User(dbm.Document):
 
     def __unicode__(self):
         return self.username
-
-
-class Html(dbm.Document):
-    INT_CHOICE = (0, 1)
-    url = dbm.URLField()
-    html = dbm.StringField()
-    url_type = dbm.ObjectIdField()
-    time = dbm.StringField()
-    date = dbm.StringField()
-    checked = dbm.IntField(choices=INT_CHOICE)
-    div = dbm.StringField()
-    datetime = dbm.DateTimeField()

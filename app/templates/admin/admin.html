@@ -8,7 +8,7 @@
     <form action="/admin" method="post"><label> Hosts </label>
         <select name="host_id">
             {% for host in hosts.hosts -%}
-            <option value="{{host['_id']}}">{{ host['host'] }}</option>
+            <option value="{{host['id']}}">{{ host['host'] }}</option>
             {%- endfor %}
         </select><br>
         <label>URL</label><input type="text" id="url" name="url"/><br>
@@ -31,7 +31,7 @@
         <td>{{ url['host'] }}</td>
         <td>{{ url['url'] }}</td>
         <td>{{ url['datetime'] }}</td>
-        <td><a class="remove-link" href="#" name="{{ url['_id'] }}">remove</a></td>
+        <td><a class="remove-link" href="#" name="{{ url['id'] }}">remove</a></td>
     </tr>
     {%- endfor %}
     </tbody>

@@ -3,7 +3,6 @@ __author__ = 'erik'
 from urllib2 import urlopen, URLError
 import time
 
-from pymongo import MongoClient
 import schedule
 
 from utils.logerconf import Logger
@@ -15,26 +14,27 @@ config_parser = Parser()
 logger = Logger()
 log = logger.get_logger()
 
-connection_string = "mongodb://localhost"
-connection = MongoClient(connection_string)
-database = connection.diffs
+from workers.comparing import Comparator
+from db.diffdb import HtmlDAO
 
-admin_worker = Admin(database)
+dao = HtmlDAO()
+comparator = Comparator()
+
+admin_worker = Admin()
 
 
 def do_job():
     log.info('Job started')
     urls = admin_worker.get_all_active_urls()
     for url in urls:
-        _id = url['_id']
-        dao.insert_html(get_page_as_string(url['url']), url['url'], _id)
-        comparator.compare(_id)
-        comparator.check(_id)
+        id = url['id']
+        dao.insert_html(get_page_as_string(url['url']), url['url'], id)
+        comparator.compare(id)
+        comparator.check(id)
     log.info('Job ended')
 
 period = config_parser.get_period()
 schedule.every(period).minutes.do(do_job)
-
 
 def get_page_as_string(url):
     try:
@@ -44,13 +44,7 @@ def get_page_as_string(url):
         return "could not open page"
 
 
-from workers.comparing import Comparator
-from db.diffdb import HtmlDAO
-
-dao = HtmlDAO(database)
-comparator = Comparator(database)
-
-if __name__ == '__main__':
+def start():
     while True:
         schedule.run_pending()
         time.sleep(5)
