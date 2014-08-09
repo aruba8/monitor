@@ -7,6 +7,7 @@
 <body>
 
 {% if is_authenticated %}
+Hello {{ g.user.get_id()}}!!
 <ul>
     <li><a href="{{ url_for('admin_page') }}">admin</a></li>
     <li><a href="{{ url_for('logout') }}">logout</a></li>

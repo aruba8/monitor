@@ -32,6 +32,7 @@ def before_request():
 @app.route('/index')
 def index():
     is_authenticated = g.user.is_authenticated()
+    username = g.user.get_id()
     results = get_all_results()
     change_results = get_all_changed_results()
     return render_template('index.html', results=results, change_results=change_results,
