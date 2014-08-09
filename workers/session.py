@@ -11,46 +11,38 @@ from utils.logerconf import Logger
 logger = Logger()
 log = logger.get_logger()
 from app.models import User
+from app.models import Sessions as SessionModel
 
 
 class Sessions:
-    def __init__(self, database_diffs):
-        self.sessions = database_diffs.sessions
-        self.users = database_diffs.users
 
     def get_session(self, session_id):
-
         # this may fail because the string may not be a valid bson objectid
         try:
             _id = ObjectId(session_id)
         except:
             log.info("bad sessionid passed in")
             return None
-
-        session = self.sessions.find_one({'_id': _id})
+        session = SessionModel.objects.get(id=_id)
 
         log.info("returning a session or none")
         return session
 
     def start_session(self, user_id):
-        session = {'username': user_id}
-
+        # session = {'username': user_id}
         try:
-            self.sessions.insert(session, safe=True)
+            SessionModel(username=user_id).save()
         except:
             log.error("Unexpected error on start_session:")
             return -1
-
-        return str(session['_id'])
 
     # will send a new user session by deleting from sessions table
     def end_session(self, session_id):
         # this may fail because the string may not be a valid bson objectid
         try:
-            _id = ObjectId(session_id)
-            self.sessions.remove({'_id': _id})
+            SessionModel.objects(id=ObjectId(session_id)).delete()
         except:
-            return
+            log.warn("Couldn't delete session!!!")
 
             # validates the login, returns True if it's a valid user login. false otherwise
 

@@ -17,7 +17,7 @@ from db.diffdb import HtmlDAO
 from workers.admin import Admin
 
 html_dao = HtmlDAO()
-sessions = Sessions(db)
+sessions = Sessions()
 from models import User
 
 
@@ -184,7 +184,6 @@ def signup_page():
             return redirect(url_for('signup_page'))
     else:
         return redirect(url_for('signup_page'))
-
 
 
 def get_all_results():

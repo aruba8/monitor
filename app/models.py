@@ -29,3 +29,7 @@ class User(dbm.Document):
 
     def __unicode__(self):
         return self.username
+
+
+class Sessions(dbm.Document):
+    username = dbm.StringField()
