@@ -34,8 +34,8 @@ class Sessions:
         log.info("returning a session or none")
         return session
 
-    def start_session(self, user):
-        session = {'username': user.id}
+    def start_session(self, user_id):
+        session = {'username': user_id}
 
         try:
             self.sessions.insert(session, safe=True)
@@ -57,16 +57,12 @@ class Sessions:
             # validates the login, returns True if it's a valid user login. false otherwise
 
     def validate_login(self, username, password, user_record):
-        users = self.users
-
-        user = users.find_one({'_id': username})
-
+        user = User.objects(login=username).first()
         if user is None:
             log.warn("User not in database")
             return False
 
         salt = user['password'].split(',')[1]
-
         if user['password'] != self.make_pw_hash(password, salt):
             log.warn("user password is not a match")
             return False
@@ -133,14 +129,10 @@ class Sessions:
     def new_user(self, username, password):
         password_hash = self.make_pw_hash(password)
 
-        user = {'_id': username, 'password': password_hash}
-
-        users = self.users
-
         try:
-            users.insert(user, safe=True)
+            User(login=username, password=password_hash, active=True).save()
         except errors.DuplicateKeyError:
-            log.error("oops, username: " + user + " is already taken")
+            log.error("oops, username: " + username + " is already taken")
             return False
         except errors.OperationFailure:
             log.error("oops, mongo error")
@@ -148,13 +140,13 @@ class Sessions:
 
         return True
 
-    def validate_new_user(self, username, password, password2, secret_word):
+    def validate_new_user(self, username, password, confirm, secret_word):
         from utils.configparser import Parser
 
         config = Parser()
         if username is None or username == '':
             return False
-        if password != password2:
+        if password != confirm:
             return False
         if secret_word != config.get_secret_word():
             return False

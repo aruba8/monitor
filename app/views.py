@@ -1,10 +1,8 @@
-import os
-
-from flask import request, redirect, session, jsonify, render_template, g, url_for, flash
+from flask import request, redirect, jsonify, render_template, g, url_for, flash
 from bson.objectid import ObjectId
 from app import app, db, lm
-from forms import LoginForm
-from flask.ext.login import login_user, logout_user, current_user, login_required
+from forms import LoginForm, SignUpForm
+from flask_login import login_user, logout_user, current_user, login_required
 from datetime import datetime
 
 from utils.logerconf import Logger
@@ -94,7 +92,7 @@ def admin_page():
         urls = admin_worker.get_all_active_urls()
         hosts = admin_worker.get_active_hosts()
         hosts = {"count": hosts.count(), "hosts": hosts}
-        return render_template('admin.html', urls=urls, hosts=hosts)
+        return render_template('admin/admin.html', urls=urls, hosts=hosts)
     elif request.method == 'POST':
         url_id = request.form.get('url_to_delete')
         if url_id is not None:
@@ -114,7 +112,7 @@ def admin_hosts():
     admin_worker = Admin(db)
     if request.method == 'GET':
         xpaths = admin_worker.get_xpaths()
-        return render_template('hosts.html', xpaths=xpaths)
+        return render_template('admin/hosts.html', xpaths=xpaths)
     elif request.method == 'POST':
         host = request.form.get('host')
         xpath = request.form.get('xpath')
@@ -145,8 +143,8 @@ def admin_hosts():
 
 
 @lm.user_loader
-def user_loader(_id):
-    return sessions.get_user(_id)
+def user_loader(login):
+    return User.objects(login=login).first()
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -155,9 +153,9 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User(form.login.data, form.password.data)
-        if sessions.validate_login(user.id, form.password.data, {}):
-            sessions.start_session(user)
+        user = User.objects(login=form.login.data).first()
+        if sessions.validate_login(form.login.data, form.password.data, {}):
+            sessions.start_session(form.login.data)
             login_user(user)
             flash("Logged in successfully.")
             return redirect(request.args.get('next') or url_for('index'))
@@ -173,25 +171,20 @@ def logout():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup_page():
+    form = SignUpForm()
     if request.method == 'GET':
-        return render_template('signup.html')
-    if request.method == 'POST':
-
-        username = request.form['username']
-        password = request.form['password']
-        password2 = request.form['password2']
-        secret_word = request.form['verify']
-        if sessions.validate_new_user(username, password, password2, secret_word):
-            if sessions.new_user(username, password):
-                user = User(username, password)
-                session_id = sessions.start_session(user)
-                cookie = sessions.make_secure_val(session_id)
-                session['username'] = cookie
-                return redirect('/admin')
-            else:
-                return redirect('/signup')
+        return render_template('signup.html', form=form)
+    if request.method == 'POST' and form.validate() and sessions.validate_new_user(form.login.data, form.password.data,
+                                                                                   form.confirm.data, form.secret.data):
+        if sessions.new_user(form.login.data, form.password.data):
+            user = User.objects(login=form.login.data).first()
+            login_user(user)
+            return redirect(url_for('index'))
         else:
-            return render_template('signup.html')
+            return redirect(url_for('signup_page'))
+    else:
+        return redirect(url_for('signup_page'))
+
 
 
 def get_all_results():

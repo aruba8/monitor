@@ -5,11 +5,19 @@
 </head>
 <body>
 <form action="/signup" method="post">
-    <label>username:</label><input type="text" name="username">
-    <label>password:</label><input type="password" name="password">
-    <label>password again:</label><input type="password" name="password2">
-    <label>secret word:</label><input type="text" name="verify">
-    <input type="submit" name="submit">
+    {{form.hidden_tag()}}
+    {{form.login.label}}{{form.login(size=30)}}<br>
+    {% for error in form.errors.login %}
+    <span style="color: red;">[{{error}}]</span>
+    {% endfor %}
+    {{form.password.label}}{{form.password(size=30)}}<br>
+    {{form.confirm.label}}{{form.confirm(size=30)}}<br>
+    {{form.secret.label}}{{form.secret(size=30)}}<br>
+    {% for error in form.errors.login %}
+    <span style="color: red;">[{{error}}]</span>
+    {% endfor %}
+    <br>
+    <input type="submit" name="submit" value="Sign Up">
 </form>
 
 

@@ -1,6 +1,7 @@
 Flask >= 0.10.1
 flask-wtf
 flask-login
+flask-admin
 flask-mongoengine
 itsdangerous >= 0.24
 Jinja2 >= 2.7.2
