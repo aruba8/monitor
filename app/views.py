@@ -1,10 +1,11 @@
-from flask import request, redirect, jsonify, render_template, g, url_for, flash
-from bson.objectid import ObjectId
-from app import app, lm
-from forms import LoginForm, SignUpForm
-from flask_login import login_user, logout_user, current_user, login_required
 from datetime import datetime
 
+from flask import request, redirect, jsonify, render_template, g, url_for, flash
+from bson.objectid import ObjectId
+from flask_login import login_user, logout_user, current_user, login_required
+
+from app import app, lm
+from forms import LoginForm, SignUpForm, AddURLForm
 from utils.logerconf import Logger
 
 
@@ -58,6 +59,7 @@ def diffs_c():
 
 @app.route('/p', methods=['GET'])
 def paging_table():
+    is_authenticated = g.user.is_authenticated()
     args = request.args
     url_type = args['ut']
     page = 0
@@ -68,11 +70,13 @@ def paging_table():
 
     results = html_dao.get_results_skip(url_type, 10, page)
     url = html_dao.get_url_by_url_type(ObjectId(url_type))['url']
-    return render_template('p.html', results=results, ut=url_type, url=url, short_url=url[32:], p=page)
+    return render_template('p.html', results=results, ut=url_type, url=url, short_url=url[32:], p=page,
+                           is_authenticated=is_authenticated)
 
 
 @app.route('/cp', methods=['GET'])
 def all_changes():
+    is_authenticated = g.user.is_authenticated()
     args = request.args
     page = 0
     if 'p' in args:
@@ -81,29 +85,47 @@ def all_changes():
         page = 0
     results = get_changed_results(page)
 
-    return render_template('cp.html', results=results, p=page)
+    return render_template('cp.html', results=results, p=page, is_authenticated=is_authenticated)
 
 
 @app.route('/admin', methods=['GET', 'POST'])
 @login_required
 def admin_page():
     admin_worker = Admin()
-    if request.method == 'GET':
-        urls = admin_worker.get_all_active_urls()
-        hosts = admin_worker.get_active_hosts()
-        hosts = {"count": hosts.count(), "hosts": hosts}
-        return render_template('admin/admin.html', urls=urls, hosts=hosts)
-    elif request.method == 'POST':
+    add_url_form = AddURLForm()
+    hosts = admin_worker.get_active_hosts()
+    add_url_form.host_id.choices = [(h.id, h.host) for h in hosts]
+    urls = admin_worker.get_all_active_urls()
+    if request.method == 'POST':
         url_id = request.form.get('url_to_delete')
         if url_id is not None:
             admin_worker.remove_url(url_id)
             return redirect('/admin')
-        url = request.form['url']
-        host = request.form['host_id']
-        if url is None or url == '':
+        if add_url_form.validate():
+            url = add_url_form.url.data
+            host = add_url_form.host_id.data
+            admin_worker.add_url(url, host)
             return redirect('/admin')
+    return render_template('admin/admin.html', urls=urls, hosts=hosts, form=add_url_form)
+
+
+@app.route('/admin', methods=['POST'])
+@login_required
+def admin_page_post():
+    admin_worker = Admin()
+    add_url_form = AddURLForm()
+    hosts = admin_worker.get_active_hosts()
+    add_url_form.host_id.choices = [(h.id, h.host) for h in hosts]
+    url_id = request.form.get('url_to_delete')
+    if url_id is not None:
+        admin_worker.remove_url(url_id)
+        return redirect('/admin')
+    if add_url_form.validate_on_submit():
+        url = add_url_form.url.data
+        host = add_url_form.host_id.data
         admin_worker.add_url(url, host)
         return redirect('/admin')
+    return redirect('/admin')
 
 
 @app.route('/hosts', methods=['GET', 'POST'])
@@ -206,8 +228,8 @@ def get_all_changed_results():
 
 def get_changed_results(pages_to_skip):
     results = []
-    for i in html_dao.get_all_changed_skip(pages_to_skip):
-        item = i
-        item['url'] = html_dao.get_url_by_url_type(i['urlType'])['url']
+    for item in html_dao.get_all_changed_skip(pages_to_skip):
+        url = html_dao.get_url_by_url_type(item['urlType'])['url']
+        item.set_url(url)
         results.append(item)
     return results

@@ -1,3 +1,5 @@
+from mongoengine import ValidationError
+
 __author__ = 'erik'
 
 import sys
@@ -23,11 +25,10 @@ class Admin:
         try:
             Urls(url=purl['url'], host_id=ObjectId(host_id), host=host['host'], path=purl['path'],
                  datetime=datetime.now(), active=1).save()
-        except:
-            log.error('Error inserting url' + sys.exc_info()[0])
+        except ValidationError:
+            log.error('Error inserting url')
 
     def remove_host(self, host_id_to_delete):
-
         Xpath.objects(id=ObjectId(host_id_to_delete)).update_one(set__active=0)
         Urls.objects(host_id=ObjectId(host_id_to_delete)).update_one(set__active=0)
 

@@ -6,12 +6,16 @@
 <div class="add-url">
     {% if hosts.count > 0 %}
     <form action="/admin" method="post"><label> Hosts </label>
-        <select name="host_id">
-            {% for host in hosts.hosts -%}
-            <option value="{{host['id']}}">{{ host['host'] }}</option>
-            {%- endfor %}
-        </select><br>
-        <label>URL</label><input type="text" id="url" name="url"/><br>
+        {{form.hidden_tag()}}
+        {{form.host_id}}<br>
+        {{form.url.label}}{{form.url}}
+        {% for error in form.errors.host_id %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}
+        {% for error in form.errors.url %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}
+
         <input type="submit" value="Add">
     </form>
     {% endif %}

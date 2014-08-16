@@ -1,22 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Home</title>
-    <link rel="stylesheet" href="static/c.css"/>
-</head>
-<body>
+<!-- extend base layout -->
+{% extends "base.html" %}
 
-{% if is_authenticated %}
-Hello {{ g.user.get_username()}}!!
-<ul>
-    <li><a href="{{ url_for('admin_page') }}">admin</a></li>
-    <li><a href="{{ url_for('logout') }}">logout</a></li>
-</ul>
-{% else %}
-<ul>
-    <li><a href="{{ url_for('login') }}">login</a></li>
-</ul>
-{% endif %}
+{% block content %}
+
 
 <div id="table1" class="tt">
     <table id="t1">
@@ -77,5 +63,4 @@ Hello {{ g.user.get_username()}}!!
         </tbody>
     </table>
 </div>
-</body>
-</html>
+{% endblock %}
