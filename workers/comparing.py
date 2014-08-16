@@ -39,15 +39,16 @@ class Comparator:
     def check(self, url_type):
         pres = self.html_dao.get_results(url_type)
         if pres.count() == 0:
+            log.info("Comparing finished")
             return
         result = pres[0]
         from workers.emailworker import Emailer
 
         e = Emailer()
         if result['areIdentical'] == 0:
-            text = '''
-            Some changes are realized!!
-            http://mmcp.zapto.org/
-            '''
-            message = e.init_msg('Attention!!', text)
+            compared_objs = result['compared_objs']
+            old, new = self.html_dao.get_html_by_ids(compared_objs[0], compared_objs[1])
+            body = self.show_diff(old['div'], new['div'])
+            message = e.init_msg('Attention!!', body)
             e.send_email(message)
+            log.info("Comparing finished")

@@ -86,7 +86,6 @@ class HtmlDAO:
                 time=dt.strftime("%X"), datetime=dt, urlType=url_type).save()
 
     def get_results(self, url_type):
-        query = {'urlType': url_type}
         return Results.objects(urlType=url_type).order_by('-datetime')[:10]
 
     def get_results_skip(self, url_type, limit_number, number_to_skip):
