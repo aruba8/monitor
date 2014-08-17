@@ -4,11 +4,14 @@
 {% block content %}
 <div class="add-host-form">
     <form action="{{ url_for('admin_hosts') }}" method="post">
+        {{add_host_form.hidden_tag()}}
 
         <fieldset>
-            <label for="host">Host</label><input type="text" name="host" id="host"/><br>
-            <label for="xpath">Xpath</label><input type="text" name="xpath" id="xpath"/><br>
-            <label for="submit">.</label> <input type="submit" value="submit" id="submit"/>
+            {{add_host_form.host.label}}{{add_host_form.host}}{% for error in add_host_form.errors.host %}<span
+                style="color: red;">[{{error}}]</span>{% endfor %}<br>
+            {{add_host_form.xpath.label}}{{add_host_form.xpath}}{% for error in add_host_form.errors.xpath %}<span
+                style="color: red;">[{{error}}]</span>{% endfor %}<br>
+            {{add_host_form.submit.label}}{{add_host_form.submit(value_='asdasd')}}<br>
         </fieldset>
     </form>
 </div>
@@ -40,11 +43,11 @@
     <span>Edit host?</span>
 
     <form action="{{ url_for('admin_hosts') }}" method="POST">
-        <input id="edit-input" name="edit" type="hidden" value="">
-        <label for="edit-host-field">Host</label><input type="text" id="edit-host-field" name="host-to-edit">
-        <label for="edit-xpath-field">Xpath</label><input type="text" id="edit-xpath-field" name="xpath-to-edit">
-        <label for="edit-submit">Submit</label><input type="submit" id="edit-submit"><span
-            id="cancel-edit">Cancel</span>
+        {{edit_host_form.edit}}
+        {{edit_host_form.host_to_edit.label}}{{edit_host_form.host_to_edit}}
+        {{edit_host_form.edit_xpath_field.label}}{{edit_host_form.edit_xpath_field}}
+        {{edit_host_form.edit_submit}}
+        <span id="cancel-edit">Cancel</span>
     </form>
 </div>
 <div id="hider"></div>

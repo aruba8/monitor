@@ -43,8 +43,8 @@ $(function(){
         var editForm = $('#edit-form');
         var offset = $(this).offset();
         var hostId = $(this).attr("name");
-        var hostInput = $("#edit-host-field");
-        var xpathInput = $("#edit-xpath-field");
+        var hostInput = $("#host_to_edit");
+        var xpathInput = $("#edit_xpath_field");
         var editInput = $("#edit-input");
         var cancelButton = $('#cancel-edit');
 

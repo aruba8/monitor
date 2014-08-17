@@ -5,7 +5,7 @@ from bson.objectid import ObjectId
 from flask_login import login_user, logout_user, current_user, login_required
 
 from app import app, lm
-from forms import LoginForm, SignUpForm, AddURLForm
+from forms import LoginForm, SignUpForm, AddURLForm, HostAddForm, HostEditForm
 from utils.logerconf import Logger
 
 
@@ -109,43 +109,25 @@ def admin_page():
     return render_template('admin/admin.html', urls=urls, hosts=hosts, form=add_url_form)
 
 
-@app.route('/admin', methods=['POST'])
-@login_required
-def admin_page_post():
-    admin_worker = Admin()
-    add_url_form = AddURLForm()
-    hosts = admin_worker.get_active_hosts()
-    add_url_form.host_id.choices = [(h.id, h.host) for h in hosts]
-    url_id = request.form.get('url_to_delete')
-    if url_id is not None:
-        admin_worker.remove_url(url_id)
-        return redirect('/admin')
-    if add_url_form.validate_on_submit():
-        url = add_url_form.url.data
-        host = add_url_form.host_id.data
-        admin_worker.add_url(url, host)
-        return redirect('/admin')
-    return redirect('/admin')
-
 
 @app.route('/hosts', methods=['GET', 'POST'])
 @login_required
 def admin_hosts():
     admin_worker = Admin()
-    if request.method == 'GET':
-        xpaths = admin_worker.get_xpaths()
-        return render_template('admin/hosts.html', xpaths=xpaths)
-    elif request.method == 'POST':
-        host = request.form.get('host')
-        xpath = request.form.get('xpath')
+    add_host_form = HostAddForm()
+    edit_host_form = HostEditForm()
+    xpaths = admin_worker.get_xpaths()
+
+    if request.method == 'POST':
         host_id_to_delete = request.form.get('host_to_delete')
         host_id = request.form.get('getHostId')
         edit = request.form.get("edit")
         if edit is not None:
             host_id_to_edit = request.form.get("edit")
-            host_to_edit = request.form.get("host-to-edit")
-            xpath_to_edit = request.form.get("xpath-to-edit")
+            host_to_edit = request.form.get("host_to_edit")
+            xpath_to_edit = request.form.get("edit_xpath_field")
             admin_worker.edit_host(host_id_to_edit, host_to_edit, xpath_to_edit)
+            return redirect(url_for('admin_hosts'))
 
         if host_id is not None:
             host_to_edit = admin_worker.get_host_by_id(host_id)
@@ -157,11 +139,13 @@ def admin_hosts():
             admin_worker.remove_host(host_id_to_delete)
             return redirect(url_for('admin_hosts'))
 
-        if host == '' or host is None or xpath == '' or xpath is None:
-            return redirect(url_for('admin_hosts'))
-        else:
+        elif add_host_form.validate_on_submit():
+            host = add_host_form.host.data
+            xpath = add_host_form.xpath.data
             admin_worker.add_xpath(host, xpath)
             return redirect(url_for('admin_hosts'))
+    return render_template('admin/hosts.html', xpaths=xpaths, add_host_form=add_host_form,
+                           edit_host_form=edit_host_form)
 
 
 @lm.user_loader
