@@ -1,3 +1,5 @@
+to install lxml on ubuntu run 'sudo apt-get install libxml2-dev libxslt-dev python-dev lib32z1-dev'
+
 monitor
 =======
 
