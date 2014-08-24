@@ -11,9 +11,23 @@
         del {
         background-color: lightcoral;
         }
+
+        .header {
+        font: 12pt sans-serif;
+        border: 1px solid black;
+        background-color: #00FFFF;
+
+        }
+
     </style>
 </head>
 <body>
+<div class="header">
+    Some changes realized here: <a href="{{ url }}">{{ url }}</a>
+    <br>
+    Whole history of changes you can find here: <a href="http://mmcp.zapto.org">http://mmcp.zapto.org</a>
+</div>
+<br>
 {{ body }}
 </body>
 </html>

@@ -5,9 +5,11 @@ from email.header import Header
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
+from jinja2 import Environment, PackageLoader
+
 from utils.logerconf import Logger
 from utils.configparser import Parser
-from jinja2 import Environment, PackageLoader
+
 
 env = Environment(loader=PackageLoader('app', 'templates'))
 email_template = env.get_template('email_base_template.html')
@@ -19,12 +21,12 @@ class Emailer():
     def __init__(self):
         self.config = Parser()
 
-    def init_msg(self, subject, body):
+    def init_msg(self, subject, body, url):
         message = MIMEMultipart('alternative')
         message['Subject'] = Header(subject, 'utf-8')
         message['From'] = self.config.get_login()
         message['To'] = self.config.to.__str__()
-        part = MIMEText(email_template.render(body=body), 'html', _charset='utf-8')
+        part = MIMEText(email_template.render(body=body, url=url), 'html', _charset='utf-8')
         message.attach(part)
         return message
 
