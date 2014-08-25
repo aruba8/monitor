@@ -48,7 +48,7 @@ class Comparator:
         e = Emailer()
         if result['areIdentical'] == 0:
             compared_objs = result['compared_objs']
-            old, new = self.html_dao.get_html_by_ids(compared_objs[0], compared_objs[1])
+            old, new = self.html_dao.get_html_by_ids(compared_objs[1], compared_objs[0])
             body = self.show_diff(old['div'], new['div'])
             message = e.init_msg('Attention!!', body, url)
             e.send_email(message)
