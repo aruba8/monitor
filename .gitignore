@@ -1,10 +1,12 @@
 .idea
 *.pyc
-
+log.txt
 configs.ini
+*.pid
 
 config.ini
 
 *.log
 
 test.py
+tests.py
