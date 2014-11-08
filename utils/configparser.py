@@ -8,7 +8,7 @@ from ConfigParser import ConfigParser
 class Parser:
     def __init__(self):
         self.config = ConfigParser()
-        self.__cfile = open(os.path.join(os.getcwd(), 'config.ini'), 'r')
+        self.__cfile = open(os.path.join(os.getcwd(), 'config/config.ini'), 'r')
         self.config.readfp(self.__cfile)
         self.login = self.config.get('EmailConfigs', 'sender')
         self.password = self.config.get('EmailConfigs', 'password')
